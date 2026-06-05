@@ -8,7 +8,7 @@ Workflow:
    crosswalk (type=1) + Census tract centroids.
 
 Output columns:
-zip,latitude,longitude,city,state,county_geoid,county_name,centroid_source
+zip,latitude,longitude,city,state,county_geoid,county_name,population,density,centroid_source
 """
 
 from __future__ import annotations
@@ -93,6 +93,17 @@ def to_float(raw: str) -> float:
     return float((raw or "").strip())
 
 
+def to_float_or_none(raw: str) -> float | None:
+    try:
+        return to_float(raw)
+    except ValueError:
+        return None
+
+
+def is_true(raw: str) -> bool:
+    return (raw or "").strip().upper() == "TRUE"
+
+
 def read_crosswalk(path: Path) -> Tuple[List[str], Dict[str, dict]]:
     by_zip: Dict[str, List[dict]] = defaultdict(list)
 
@@ -130,12 +141,12 @@ def read_crosswalk(path: Path) -> Tuple[List[str], Dict[str, dict]]:
     return zips, metadata
 
 
-def read_uszips(path: Path) -> Dict[str, Tuple[float, float]]:
-    zip_to_coord: Dict[str, Tuple[float, float]] = {}
+def read_uszips(path: Path) -> Dict[str, dict]:
+    zip_to_data: Dict[str, dict] = {}
 
     with path.open("r", newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
-        required = {"zip", "lat", "lng"}
+        required = {"zip", "lat", "lng", "zcta", "population", "density"}
         missing = sorted(required - set(reader.fieldnames or []))
         if missing:
             raise ValueError(
@@ -146,14 +157,28 @@ def read_uszips(path: Path) -> Dict[str, Tuple[float, float]]:
             zip_code = normalize_zip(row.get("zip", ""))
             if not zip_code:
                 continue
-            try:
-                lat = to_float(row.get("lat", ""))
-                lon = to_float(row.get("lng", ""))
-            except ValueError:
-                continue
-            zip_to_coord[zip_code] = (lat, lon)
 
-    return zip_to_coord
+            # Keep only true ZCTAs that have both population and density populated.
+            if not is_true(row.get("zcta", "")):
+                continue
+
+            population = (row.get("population") or "").strip()
+            density = (row.get("density") or "").strip()
+            if not population or not density:
+                continue
+
+            # Validate numeric values to avoid propagating malformed inputs.
+            to_float(population)
+            to_float(density)
+
+            zip_to_data[zip_code] = {
+                "lat": to_float_or_none(row.get("lat", "")),
+                "lon": to_float_or_none(row.get("lng", "")),
+                "population": population,
+                "density": density,
+            }
+
+    return zip_to_data
 
 
 def hud_zip_to_tract_rows_by_query(
@@ -389,6 +414,8 @@ def write_output(path: Path, rows: Iterable[dict]) -> None:
         "state",
         "county_geoid",
         "county_name",
+        "population",
+        "density",
         "centroid_source",
     ]
 
@@ -412,28 +439,40 @@ def main() -> None:
         raise FileNotFoundError(f"Missing uszips file: {uszips_path}")
 
     zip_codes, metadata = read_crosswalk(crosswalk_path)
-    uszip_coords = read_uszips(uszips_path)
+    uszip_data = read_uszips(uszips_path)
 
-    missing_from_uszips = [z for z in zip_codes if z not in uszip_coords]
-    if missing_from_uszips and not args.hud_token:
+    eligible_zip_codes = [z for z in zip_codes if z in uszip_data]
+    excluded_zip_count = len(zip_codes) - len(eligible_zip_codes)
+
+    if not eligible_zip_codes:
+        raise RuntimeError(
+            "No eligible ZIPs found after filtering to uszips ZCTA=TRUE rows with population and density."
+        )
+
+    missing_coords = [
+        z
+        for z in eligible_zip_codes
+        if uszip_data[z]["lat"] is None or uszip_data[z]["lon"] is None
+    ]
+    if missing_coords and not args.hud_token:
         print(
             "Warning: HUD token not provided. "
-            "ZIPs missing from uszips.csv will use county centroid fallback. "
-            f"Missing ZIP count: {len(missing_from_uszips)}"
+            "Eligible ZIPs missing uszips lat/lng will use county centroid fallback. "
+            f"Missing coordinate count: {len(missing_coords)}"
         )
 
     hud_rows_by_zip: Dict[str, List[dict]] = {}
-    if missing_from_uszips and args.hud_token:
-        states = {metadata[z]["state"] for z in zip_codes if metadata[z]["state"]}
+    if missing_coords and args.hud_token:
+        states = {metadata[z]["state"] for z in eligible_zip_codes if metadata[z]["state"]}
         hud_query = pick_hud_query_value(states)
         hud_rows_by_zip = hud_zip_to_tract_rows_by_query(
             query=hud_query,
             token=args.hud_token,
             timeout=args.timeout,
-            target_zips=set(missing_from_uszips),
+            target_zips=set(missing_coords),
         )
 
-        unresolved = sorted(z for z in missing_from_uszips if z not in hud_rows_by_zip)
+        unresolved = sorted(z for z in missing_coords if z not in hud_rows_by_zip)
         for zip_code in unresolved:
             zip_rows = hud_zip_to_tract_rows_by_zip(
                 zip_code=zip_code,
@@ -447,9 +486,10 @@ def main() -> None:
     county_centroid_cache: Dict[str, Tuple[float, float]] = {}
     output_rows: List[dict] = []
 
-    for zip_code in zip_codes:
-        if zip_code in uszip_coords:
-            lat, lon = uszip_coords[zip_code]
+    for zip_code in eligible_zip_codes:
+        uszip_entry = uszip_data[zip_code]
+        if uszip_entry["lat"] is not None and uszip_entry["lon"] is not None:
+            lat, lon = uszip_entry["lat"], uszip_entry["lon"]
             source = "uszips"
         else:
             zip_rows = hud_rows_by_zip.get(zip_code, [])
@@ -484,6 +524,8 @@ def main() -> None:
                 "state": base["state"],
                 "county_geoid": base["county_geoid"],
                 "county_name": base["county_name"],
+                "population": uszip_entry["population"],
+                "density": uszip_entry["density"],
                 "centroid_source": source,
             }
         )
@@ -494,6 +536,7 @@ def main() -> None:
     county_fallback_count = sum(1 for row in output_rows if row["centroid_source"] == "county_centroid_fallback")
 
     print(f"Saved {len(output_rows)} ZIP centroids to {output_path}")
+    print(f"Excluded non-ZCTA or missing pop/density ZIPs: {excluded_zip_count}")
     print(f"Centroids from uszips.csv: {len(output_rows) - hud_fallback_count - county_fallback_count}")
     print(f"Centroids from HUD fallback: {hud_fallback_count}")
     print(f"Centroids from county fallback: {county_fallback_count}")
