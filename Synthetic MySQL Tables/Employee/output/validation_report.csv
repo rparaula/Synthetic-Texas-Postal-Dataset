@@ -1,0 +1,16 @@
+check_name,status,details
+employee_import row count equals TOTAL_TARGET_EMPLOYEES,PASS,"rows=5,000, target=5,000"
+Every employee has a department_id,PASS,missing=0
+Every department_id exists in departments.csv,PASS,employee department IDs were compared against the export
+Every department has at least one employee,PASS,departments_without_employees=0
+Every department has exactly one department manager,PASS,bad_departments=0
+Every facility has exactly one facility manager,PASS,bad_facilities=0
+Every regular employee has a manager_import_key,PASS,missing=0
+Every manager_import_key exists as an employee_import_key,PASS,missing_references=0
+Every email is unique,PASS,duplicate_emails=0
+No regular employee salary exceeds assigned manager salary,PASS,violations=0
+Department targets sum to facility targets,PASS,department target totals were checked per facility
+Facility targets sum to TOTAL_TARGET_EMPLOYEES,PASS,"sum=5,000"
+No facility is below its minimum staffing,PASS,below_minimum=0
+No unexpected department type is silently ignored,PASS,unexpected_department_type_warnings_recorded=0
+No generated string exceeds likely schema limits,PASS,no violations
