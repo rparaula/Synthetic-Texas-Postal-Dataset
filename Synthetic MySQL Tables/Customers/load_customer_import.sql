@@ -10,6 +10,7 @@ CREATE TABLE staging_customer_import (
     middle_initial CHAR(1) NULL,
     last_name VARCHAR(50) NOT NULL,
     street_address VARCHAR(100) NOT NULL,
+    county VARCHAR(50) NOT NULL,
     city VARCHAR(50) NOT NULL,
     state_code CHAR(2) NOT NULL,
     zip_code VARCHAR(10) NOT NULL,
@@ -31,8 +32,9 @@ CREATE TABLE staging_customer_import (
     home_owner CHAR(1) NULL
 );
 
--- Update this placeholder path before running.
-LOAD DATA LOCAL INFILE '/absolute/path/to/customer_import.csv'
+
+-- Update this placeholder path before running. 
+LOAD DATA LOCAL INFILE 'Z:/Computer Science/GitHub Repositories/Personal Projects/Synthetic-Texas-Postal-Dataset/Synthetic MySQL Tables/Customers/customer_import.csv'
 INTO TABLE staging_customer_import
 CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ',' ENCLOSED BY '"' ESCAPED BY '"'
@@ -45,6 +47,7 @@ IGNORE 1 LINES
     middle_initial,
     last_name,
     street_address,
+    county,
     city,
     state_code,
     zip_code,
@@ -72,6 +75,7 @@ INSERT INTO customer (
     middle_initial,
     last_name,
     street_address,
+    county,
     city,
     state_code,
     zip_code,
