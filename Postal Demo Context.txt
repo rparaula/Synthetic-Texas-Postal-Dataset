@@ -1,0 +1,95 @@
+One record within the facility table represents one unique USPS facility. Their location is referenced using the "territory" and "zip_geo" tables.
+	- Each facility can be categorized under a facility type (Post Office, Vehicle Maintenance, Administrative Office, Network Facilities, Mail Processing). Referenced by facility_type.
+	- From the original USPS dataset, a facility can have multiple facility types; however, within this project we organized a facility type hierarchy so each facility has 1 type only.
+		- Hierarchy goes Post Office < Vehicle Maintenance < Administrative Office < Network Facilities < Mail Processing
+		- So if a facility is both a Network Facility and Mail Processing, it will mainly be registered as a mail processing facility.
+		- This is also because to simulate a package's lifecycle, we are only concerned with post offices, network facilities, and mail processing facilities.
+
+Every facility can have multiple departments. Every department can have multiple employees. In this scenario, an employee can only belong to one specific department at a time.
+	- Every department name starts with a suffix that is based on the facilities name for easy identification. Example, the delivery department at Eastwood is "EW_Delivery".
+	- The "type" of department, which is basically just the suffix used in the department_name field is dependent on what type of facility the department belongs to.
+		- A post office facility will have 3 departments: "Retail Services", "Delivery", and "Logistics"
+		- A network facility will have 4 departments: "Delivery", "Logistics", "Operations", and "Administrative"
+		- A mail processing facility will have 4 departments: "Logistics", "Operations", "Maintenance", and "Administrative"
+		- For simplicity reasons, Vehicle Maintenance and Administrative Office will only have 1 department, "Maintenance" and "Administrative" respectively.
+
+
+
+All employees can only belong to one department at a time. Through this hierarchy employee -> department -> facility -> territory, you can determine where both structurally and locationally where a employee works. Within the employee table, each record identifies one unique employee.
+
+
+We also have a customers table where each record identifies one unique customer. All customers are located within Texas. A customer can order a multitude of package, and each package can be received at any facility, but likely majority of customers will have their packages received by their closest facility or preferred facility. Within the customer's table we keep track of a variety of personal information to identify each customer such as...
+	- Names / Identification
+		- Customer ID
+		- First Name
+		- Middle Initial
+		- Last Name
+	- Location
+		- Street Address
+		- City
+		- State Code (TX only for now)
+		- ZIP Code
+		- Territory ID
+	- Contact Info
+		- Phone number
+			- First 3 digits must represent Texas area codes
+		- Email
+		- UserID (For web authentication)
+	- Personal Info
+		- Birth Date
+			- Has to be at least 18 by their first package
+		- Marital Status
+			- M / S
+		- Gender
+			- Male, Female, or "N/A"
+		- Email Address
+			- Long as it looks like a legit email
+		- Annual Income
+			- Very High >= $150,000 per year
+			- High >= $100,000 per year
+			- Medium >= $50,000 per year
+			- Low < $50,000 per year
+		- Total Children
+			- 0 to 5 (Majority should be 0, with an exponential decrease in  population with each child. I.e., # ppl w/ 0 > # ppl with 1 > # ppl with 2 > # ppl with 3 etc.)
+		- Education Level
+			- 5 Options -> {Partial High School, High School, Graduate Degree, Partial College, & Bachelors)
+		- Occupation
+			- 5 Options -> {Skilled Manual, Professional, Management, Clerical, & Manual}
+		- Home Owner
+			- Yes / No
+
+
+For the initiation process of creating a package, we'll need both the package table and the shippingdetails table. Each record within the package table represents a unique package and some basic information about that package (like status, service type, employee, customer, dimensions, etc.), which is paired with a corresponding record within the shippingdetails table. Each record within the shipping details table corresponds to all the info need to deliver that unique package to it's intended address.
+
+
+To simulate realistic trends like...how often each customer demographic orders a package, the type (both package contents & dimensions) of package a demographic orders, and the difference of these between each demographic of customers I decided to use the "Brazilian E-Commerce Public Dataset by Olist" dataset as a source of realistic inspiration. Within this dataset, I plan to use its' contents to map a realistic distribution of customer demographic, a time-series of each customer orders, and the beginning stage of each package's lifecycle (which is the timestamps of when a package was received at the post office, timestamp of when the package was sorted, and timestamp when package was ready to be moved from its' origin facility).
+
+
+Since we used the olist_customers_dataset.csv to establish our postal customers, I also plan to use the olist_orders_dataset.csv to simulate every single "package" our "post office facilities" have received:
+	
+- Each order within the Olist dataset represents a single package within our postal demo.
+	- olist.order_status can be mapped to package status to reference whether a package has been delivered, shipped, delayed, etc.
+	- olist.order_purchase_timestamp will represents the timestamp of when a post office (aka origin facility) has received a package from a customer.
+	- olist.order_approved_at will represent the timestamp of when the package was "sorted" at the origin facility (sorted means the item being processed/packaged into a box)
+	- olist.order_delivered_carrier_date will represent the time a package departs from the origin facility
+- For the actual contents and dimensions (weight, length, width, height) of a package, those will derive from the olist_order_items_dataset.csv and the olist_products_dataset.csv.
+  The olist_order_items_dataset.csv has each record represent what types of products are within the order, # of products that order requests, and the price and freight value.
+  The olist_products_dataset.csv has each record represent info pertaining to each unique product, such as a product's dimensions.
+	- Thus, for a package's shipping_cost we can use the fields within the order items dataset to map values into a package's shipping cost like...
+		- Totaling all the freight values of each item within the order to represent a package's material cost or maybe even transportation cost.
+		- Totaling all the prices of each item within an order can represent the actual charge we give to a customer for that package.
+	- For each package's dimensions (weight, length, width, height) we can use the olist_products_dataset.csv
+		- Since the order items dataset tells us what specific items is in each order (or each package) we can use the products dataset to find the dimensions of each product and total them together for the overall package dimensions.
+		- However, we need to decide an exact method of how we total all product dimensions. A box size depends on how we stack each item together to fit inside a box.
+
+- The most pressing issue is how to determine the shipping details of each package.
+	- Since we are treating each Olist order as a package, the customer ID assigned to that order represents the customer ID of who sent that package to the origin facility (post office)
+	- However, each package needs a destination and atm I'm unsure if we should just randomize the destination or develop a fair algorithm. Maybe use the sellers dataset?
+		
+
+
+
+
+
+
+
