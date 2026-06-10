@@ -18,42 +18,181 @@ USE `postal_bi_system`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Temporary view structure for view `vw_customer_id_hex_lookup`
+-- Temporary view structure for view `dim_facility`
 --
 
-DROP TABLE IF EXISTS `vw_customer_id_hex_lookup`;
-/*!50001 DROP VIEW IF EXISTS `vw_customer_id_hex_lookup`*/;
+DROP TABLE IF EXISTS `dim_facility`;
+/*!50001 DROP VIEW IF EXISTS `dim_facility`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `vw_customer_id_hex_lookup` AS SELECT 
- 1 AS `customer_id_hex`,
- 1 AS `customer_id`,
- 1 AS `first_name`,
- 1 AS `last_name`,
- 1 AS `email`,
+/*!50001 CREATE VIEW `dim_facility` AS SELECT 
+ 1 AS `facility_id`,
+ 1 AS `territory_id`,
+ 1 AS `facility_name`,
+ 1 AS `facility_type_id`,
+ 1 AS `facility_type_code`,
+ 1 AS `facility_type_name`,
+ 1 AS `facility_type_description`,
+ 1 AS `city`,
+ 1 AS `state_code`,
+ 1 AS `zip_code`,
+ 1 AS `manager_employee_id`,
+ 1 AS `is_customer_facing`,
+ 1 AS `handles_retail`,
+ 1 AS `handles_processing`,
+ 1 AS `handles_distribution`,
+ 1 AS `handles_local_delivery`,
+ 1 AS `facility_type_is_active`,
+ 1 AS `is_retail_office`,
+ 1 AS `is_processing_or_distribution_center`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `dim_incident_status`
+--
+
+DROP TABLE IF EXISTS `dim_incident_status`;
+/*!50001 DROP VIEW IF EXISTS `dim_incident_status`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `dim_incident_status` AS SELECT 
+ 1 AS `incident_status_id`,
+ 1 AS `status_name`,
+ 1 AS `sort_order`,
+ 1 AS `is_closed_status`,
+ 1 AS `is_active`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `dim_locker_location`
+--
+
+DROP TABLE IF EXISTS `dim_locker_location`;
+/*!50001 DROP VIEW IF EXISTS `dim_locker_location`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `dim_locker_location` AS SELECT 
+ 1 AS `locker_location_id`,
+ 1 AS `location_name`,
+ 1 AS `facility_id`,
+ 1 AS `facility_territory_id`,
+ 1 AS `facility_name`,
  1 AS `city`,
  1 AS `state_code`,
  1 AS `zip_code`*/;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary view structure for view `dim_territory`
+-- Temporary view structure for view `vw_customer_accounts`
 --
 
-DROP TABLE IF EXISTS `dim_territory`;
-/*!50001 DROP VIEW IF EXISTS `dim_territory`*/;
+DROP TABLE IF EXISTS `vw_customer_accounts`;
+/*!50001 DROP VIEW IF EXISTS `vw_customer_accounts`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `dim_territory` AS SELECT 
- 1 AS `territory_id`,
- 1 AS `state`,
- 1 AS `city`,
- 1 AS `county`,
- 1 AS `zip_code`,
- 1 AS `latitude`,
- 1 AS `longitude`,
- 1 AS `created_at`,
- 1 AS `updated_at`*/;
+/*!50001 CREATE VIEW `vw_customer_accounts` AS SELECT 
+ 1 AS `customer_id`,
+ 1 AS `customer_name`,
+ 1 AS `customer_email`,
+ 1 AS `preferred_facility_id`,
+ 1 AS `preferred_facility_name`,
+ 1 AS `user_id`,
+ 1 AS `username`,
+ 1 AS `login_email`,
+ 1 AS `is_active`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `fact_refund`
+--
+
+DROP TABLE IF EXISTS `fact_refund`;
+/*!50001 DROP VIEW IF EXISTS `fact_refund`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `fact_refund` AS SELECT 
+ 1 AS `refund_id`,
+ 1 AS `package_id`,
+ 1 AS `customer_id`,
+ 1 AS `customer_territory_id`,
+ 1 AS `incident_id`,
+ 1 AS `refund_facility_id`,
+ 1 AS `refund_facility_territory_id`,
+ 1 AS `reported_by_employee_id`,
+ 1 AS `employee_territory_id`,
+ 1 AS `incident_type_id`,
+ 1 AS `incident_severity_id`,
+ 1 AS `incident_status_id`,
+ 1 AS `service_type_id`,
+ 1 AS `refund_datetime`,
+ 1 AS `refund_amount`,
+ 1 AS `refund_status`,
+ 1 AS `refund_count`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `dim_department`
+--
+
+DROP TABLE IF EXISTS `dim_department`;
+/*!50001 DROP VIEW IF EXISTS `dim_department`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `dim_department` AS SELECT 
+ 1 AS `department_id`,
+ 1 AS `department_name`,
+ 1 AS `facility_id`,
+ 1 AS `facility_territory_id`,
+ 1 AS `facility_name`,
+ 1 AS `manager_employee_id`,
+ 1 AS `manager_start_date`,
+ 1 AS `department_created_date`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `dim_movement_event_type`
+--
+
+DROP TABLE IF EXISTS `dim_movement_event_type`;
+/*!50001 DROP VIEW IF EXISTS `dim_movement_event_type`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `dim_movement_event_type` AS SELECT 
+ 1 AS `package_movement_event_type_id`,
+ 1 AS `event_type_name`,
+ 1 AS `description`,
+ 1 AS `default_package_status_name`,
+ 1 AS `is_entry_event`,
+ 1 AS `is_exit_event`,
+ 1 AS `is_processing_event`,
+ 1 AS `is_delay_event`,
+ 1 AS `is_final_event`,
+ 1 AS `sort_order`,
+ 1 AS `is_active`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `vw_package_id_hex_lookup`
+--
+
+DROP TABLE IF EXISTS `vw_package_id_hex_lookup`;
+/*!50001 DROP VIEW IF EXISTS `vw_package_id_hex_lookup`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_package_id_hex_lookup` AS SELECT 
+ 1 AS `package_id_hex`,
+ 1 AS `package_id`,
+ 1 AS `recipient_customer_id_hex`,
+ 1 AS `recipient_customer_id`,
+ 1 AS `package_flow_type_id`,
+ 1 AS `package_flow_type_name`,
+ 1 AS `sender_customer_id_hex`,
+ 1 AS `sender_customer_id`,
+ 1 AS `sender_business_id_hex`,
+ 1 AS `sender_business_id`,
+ 1 AS `package_status_id`,
+ 1 AS `service_type_id`,
+ 1 AS `received_date`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -86,6 +225,112 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `vw_package_overview`
+--
+
+DROP TABLE IF EXISTS `vw_package_overview`;
+/*!50001 DROP VIEW IF EXISTS `vw_package_overview`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_package_overview` AS SELECT 
+ 1 AS `package_id`,
+ 1 AS `recipient_customer_id`,
+ 1 AS `recipient_customer_name`,
+ 1 AS `recipient_customer_email`,
+ 1 AS `package_flow_type_name`,
+ 1 AS `sender_customer_id`,
+ 1 AS `sender_customer_name`,
+ 1 AS `sender_business_id`,
+ 1 AS `sender_business_name`,
+ 1 AS `package_status`,
+ 1 AS `service_type_name`,
+ 1 AS `received_date`,
+ 1 AS `contents`,
+ 1 AS `weight_lbs`,
+ 1 AS `length_in`,
+ 1 AS `width_in`,
+ 1 AS `height_in`,
+ 1 AS `employee_id`,
+ 1 AS `handled_by_employee`,
+ 1 AS `created_at`,
+ 1 AS `updated_at`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `vw_employee_facility_assignment`
+--
+
+DROP TABLE IF EXISTS `vw_employee_facility_assignment`;
+/*!50001 DROP VIEW IF EXISTS `vw_employee_facility_assignment`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_employee_facility_assignment` AS SELECT 
+ 1 AS `employee_id`,
+ 1 AS `full_name`,
+ 1 AS `email`,
+ 1 AS `phone_number`,
+ 1 AS `job_title`,
+ 1 AS `department_id`,
+ 1 AS `department_name`,
+ 1 AS `facility_id`,
+ 1 AS `facility_name`,
+ 1 AS `facility_type_code`,
+ 1 AS `facility_type_name`,
+ 1 AS `manager_employee_id`,
+ 1 AS `manager_name`,
+ 1 AS `salary`,
+ 1 AS `hours_worked`,
+ 1 AS `user_id`,
+ 1 AS `created_at`,
+ 1 AS `updated_at`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `vw_package_delay_summary`
+--
+
+DROP TABLE IF EXISTS `vw_package_delay_summary`;
+/*!50001 DROP VIEW IF EXISTS `vw_package_delay_summary`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_package_delay_summary` AS SELECT 
+ 1 AS `package_movement_id`,
+ 1 AS `package_id`,
+ 1 AS `event_timestamp`,
+ 1 AS `delay_facility_id`,
+ 1 AS `delay_facility_name`,
+ 1 AS `event_type_name`,
+ 1 AS `expected_event_at`,
+ 1 AS `delay_minutes`,
+ 1 AS `delay_reason`,
+ 1 AS `movement_note`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `vw_facility_map`
+--
+
+DROP TABLE IF EXISTS `vw_facility_map`;
+/*!50001 DROP VIEW IF EXISTS `vw_facility_map`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_facility_map` AS SELECT 
+ 1 AS `facility_id`,
+ 1 AS `facility_name`,
+ 1 AS `facility_type_code`,
+ 1 AS `facility_type_name`,
+ 1 AS `street_address`,
+ 1 AS `city`,
+ 1 AS `county`,
+ 1 AS `state_code`,
+ 1 AS `zip_code`,
+ 1 AS `map_zip_code`,
+ 1 AS `latitude`,
+ 1 AS `longitude`,
+ 1 AS `full_address`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `vw_incident_summary`
 --
 
@@ -113,56 +358,54 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary view structure for view `fact_package`
+-- Temporary view structure for view `dim_incident_type`
 --
 
-DROP TABLE IF EXISTS `fact_package`;
-/*!50001 DROP VIEW IF EXISTS `fact_package`*/;
+DROP TABLE IF EXISTS `dim_incident_type`;
+/*!50001 DROP VIEW IF EXISTS `dim_incident_type`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `fact_package` AS SELECT 
- 1 AS `package_id`,
- 1 AS `customer_id`,
- 1 AS `recipient_customer_id`,
- 1 AS `package_flow_type_id`,
- 1 AS `package_flow_type_name`,
- 1 AS `sender_customer_id`,
- 1 AS `sender_business_id`,
- 1 AS `service_type_id`,
- 1 AS `package_status_id`,
- 1 AS `received_facility_id`,
- 1 AS `received_facility_territory_id`,
- 1 AS `received_by_employee_id`,
- 1 AS `received_datetime`,
- 1 AS `weight_lbs`,
- 1 AS `length_in`,
- 1 AS `width_in`,
- 1 AS `height_in`,
- 1 AS `package_volume_cubic_in`,
- 1 AS `package_count`*/;
+/*!50001 CREATE VIEW `dim_incident_type` AS SELECT 
+ 1 AS `incident_type_id`,
+ 1 AS `type_name`,
+ 1 AS `type_category`,
+ 1 AS `is_active`*/;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary view structure for view `dim_employee`
+-- Temporary view structure for view `vw_facility_lane_counts`
 --
 
-DROP TABLE IF EXISTS `dim_employee`;
-/*!50001 DROP VIEW IF EXISTS `dim_employee`*/;
+DROP TABLE IF EXISTS `vw_facility_lane_counts`;
+/*!50001 DROP VIEW IF EXISTS `vw_facility_lane_counts`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `dim_employee` AS SELECT 
- 1 AS `employee_id`,
- 1 AS `employee_name`,
- 1 AS `job_title`,
- 1 AS `department_id`,
- 1 AS `department_name`,
- 1 AS `facility_id`,
- 1 AS `facility_territory_id`,
- 1 AS `facility_name`,
- 1 AS `manager_employee_id`,
- 1 AS `is_manager`,
- 1 AS `hours_worked`,
- 1 AS `employee_created_date`*/;
+/*!50001 CREATE VIEW `vw_facility_lane_counts` AS SELECT 
+ 1 AS `from_facility_id`,
+ 1 AS `from_facility_name`,
+ 1 AS `to_facility_id`,
+ 1 AS `to_facility_name`,
+ 1 AS `movement_event_count`,
+ 1 AS `package_count`,
+ 1 AS `first_moved_at`,
+ 1 AS `last_moved_at`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `dim_package_status`
+--
+
+DROP TABLE IF EXISTS `dim_package_status`;
+/*!50001 DROP VIEW IF EXISTS `dim_package_status`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `dim_package_status` AS SELECT 
+ 1 AS `package_status_id`,
+ 1 AS `status_name`,
+ 1 AS `status_category`,
+ 1 AS `sort_order`,
+ 1 AS `is_final_status`,
+ 1 AS `is_active`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -199,57 +442,24 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary view structure for view `vw_package_delay_summary`
+-- Temporary view structure for view `vw_package_facility_stays`
 --
 
-DROP TABLE IF EXISTS `vw_package_delay_summary`;
-/*!50001 DROP VIEW IF EXISTS `vw_package_delay_summary`*/;
+DROP TABLE IF EXISTS `vw_package_facility_stays`;
+/*!50001 DROP VIEW IF EXISTS `vw_package_facility_stays`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `vw_package_delay_summary` AS SELECT 
- 1 AS `package_movement_id`,
+/*!50001 CREATE VIEW `vw_package_facility_stays` AS SELECT 
  1 AS `package_id`,
- 1 AS `event_timestamp`,
- 1 AS `delay_facility_id`,
- 1 AS `delay_facility_name`,
- 1 AS `event_type_name`,
- 1 AS `expected_event_at`,
- 1 AS `delay_minutes`,
- 1 AS `delay_reason`,
- 1 AS `movement_note`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `dim_package_status`
---
-
-DROP TABLE IF EXISTS `dim_package_status`;
-/*!50001 DROP VIEW IF EXISTS `dim_package_status`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `dim_package_status` AS SELECT 
- 1 AS `package_status_id`,
- 1 AS `status_name`,
- 1 AS `status_category`,
- 1 AS `sort_order`,
- 1 AS `is_final_status`,
- 1 AS `is_active`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `dim_incident_status`
---
-
-DROP TABLE IF EXISTS `dim_incident_status`;
-/*!50001 DROP VIEW IF EXISTS `dim_incident_status`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `dim_incident_status` AS SELECT 
- 1 AS `incident_status_id`,
- 1 AS `status_name`,
- 1 AS `sort_order`,
- 1 AS `is_closed_status`,
- 1 AS `is_active`*/;
+ 1 AS `entry_package_movement_id`,
+ 1 AS `facility_id`,
+ 1 AS `facility_name`,
+ 1 AS `facility_type_code`,
+ 1 AS `facility_type_name`,
+ 1 AS `arrived_at`,
+ 1 AS `departed_at`,
+ 1 AS `dwell_minutes`,
+ 1 AS `is_current_facility`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -272,441 +482,31 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary view structure for view `vw_employee_facility_assignment`
+-- Temporary view structure for view `fact_smartlocker_assignment`
 --
 
-DROP TABLE IF EXISTS `vw_employee_facility_assignment`;
-/*!50001 DROP VIEW IF EXISTS `vw_employee_facility_assignment`*/;
+DROP TABLE IF EXISTS `fact_smartlocker_assignment`;
+/*!50001 DROP VIEW IF EXISTS `fact_smartlocker_assignment`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `vw_employee_facility_assignment` AS SELECT 
- 1 AS `employee_id`,
- 1 AS `full_name`,
- 1 AS `email`,
- 1 AS `phone_number`,
- 1 AS `job_title`,
- 1 AS `department_id`,
- 1 AS `department_name`,
- 1 AS `facility_id`,
- 1 AS `facility_name`,
- 1 AS `facility_type_code`,
- 1 AS `facility_type_name`,
- 1 AS `manager_employee_id`,
- 1 AS `manager_name`,
- 1 AS `salary`,
- 1 AS `hours_worked`,
- 1 AS `user_id`,
- 1 AS `created_at`,
- 1 AS `updated_at`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `vw_package_route_history`
---
-
-DROP TABLE IF EXISTS `vw_package_route_history`;
-/*!50001 DROP VIEW IF EXISTS `vw_package_route_history`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `vw_package_route_history` AS SELECT 
- 1 AS `package_movement_id`,
+/*!50001 CREATE VIEW `fact_smartlocker_assignment` AS SELECT 
+ 1 AS `locker_assignment_id`,
  1 AS `package_id`,
- 1 AS `event_timestamp`,
- 1 AS `event_type_name`,
- 1 AS `package_status`,
- 1 AS `facility_id`,
- 1 AS `facility_name`,
- 1 AS `facility_type_code`,
- 1 AS `facility_type_name`,
- 1 AS `from_facility_id`,
- 1 AS `from_facility_name`,
- 1 AS `to_facility_id`,
- 1 AS `to_facility_name`,
- 1 AS `processed_by_employee_id`,
- 1 AS `processed_by_employee`,
- 1 AS `expected_event_at`,
- 1 AS `delay_minutes`,
- 1 AS `delay_reason`,
- 1 AS `movement_note`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `fact_incident`
---
-
-DROP TABLE IF EXISTS `fact_incident`;
-/*!50001 DROP VIEW IF EXISTS `fact_incident`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `fact_incident` AS SELECT 
- 1 AS `incident_id`,
- 1 AS `package_id`,
- 1 AS `customer_id`,
- 1 AS `customer_territory_id`,
- 1 AS `reported_by_employee_id`,
- 1 AS `employee_territory_id`,
+ 1 AS `locker_id`,
+ 1 AS `locker_location_id`,
  1 AS `facility_id`,
  1 AS `facility_territory_id`,
- 1 AS `package_movement_id`,
- 1 AS `incident_type_id`,
- 1 AS `incident_severity_id`,
- 1 AS `incident_status_id`,
- 1 AS `incident_datetime`,
- 1 AS `incident_count`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `vw_package_id_hex_lookup`
---
-
-DROP TABLE IF EXISTS `vw_package_id_hex_lookup`;
-/*!50001 DROP VIEW IF EXISTS `vw_package_id_hex_lookup`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `vw_package_id_hex_lookup` AS SELECT 
- 1 AS `package_id_hex`,
- 1 AS `package_id`,
- 1 AS `recipient_customer_id_hex`,
- 1 AS `recipient_customer_id`,
- 1 AS `package_flow_type_id`,
- 1 AS `package_flow_type_name`,
- 1 AS `sender_customer_id_hex`,
- 1 AS `sender_customer_id`,
- 1 AS `sender_business_id_hex`,
- 1 AS `sender_business_id`,
- 1 AS `package_status_id`,
- 1 AS `service_type_id`,
- 1 AS `received_date`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `dim_incident_severity`
---
-
-DROP TABLE IF EXISTS `dim_incident_severity`;
-/*!50001 DROP VIEW IF EXISTS `dim_incident_severity`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `dim_incident_severity` AS SELECT 
- 1 AS `incident_severity_id`,
- 1 AS `severity_name`,
- 1 AS `sort_order`,
- 1 AS `is_active`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `dim_service_type`
---
-
-DROP TABLE IF EXISTS `dim_service_type`;
-/*!50001 DROP VIEW IF EXISTS `dim_service_type`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `dim_service_type` AS SELECT 
- 1 AS `service_type_id`,
- 1 AS `service_type_name`,
- 1 AS `service_category`,
- 1 AS `is_active`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `vw_facility_lane_counts`
---
-
-DROP TABLE IF EXISTS `vw_facility_lane_counts`;
-/*!50001 DROP VIEW IF EXISTS `vw_facility_lane_counts`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `vw_facility_lane_counts` AS SELECT 
- 1 AS `from_facility_id`,
- 1 AS `from_facility_name`,
- 1 AS `to_facility_id`,
- 1 AS `to_facility_name`,
- 1 AS `movement_event_count`,
- 1 AS `package_count`,
- 1 AS `first_moved_at`,
- 1 AS `last_moved_at`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `dim_facility`
---
-
-DROP TABLE IF EXISTS `dim_facility`;
-/*!50001 DROP VIEW IF EXISTS `dim_facility`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `dim_facility` AS SELECT 
- 1 AS `facility_id`,
- 1 AS `territory_id`,
- 1 AS `facility_name`,
- 1 AS `facility_type_id`,
- 1 AS `facility_type_code`,
- 1 AS `facility_type_name`,
- 1 AS `facility_type_description`,
- 1 AS `city`,
- 1 AS `state_code`,
- 1 AS `zip_code`,
- 1 AS `manager_employee_id`,
- 1 AS `is_customer_facing`,
- 1 AS `handles_retail`,
- 1 AS `handles_processing`,
- 1 AS `handles_distribution`,
- 1 AS `handles_local_delivery`,
- 1 AS `facility_type_is_active`,
- 1 AS `is_retail_office`,
- 1 AS `is_processing_or_distribution_center`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `dim_movement_event_type`
---
-
-DROP TABLE IF EXISTS `dim_movement_event_type`;
-/*!50001 DROP VIEW IF EXISTS `dim_movement_event_type`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `dim_movement_event_type` AS SELECT 
- 1 AS `package_movement_event_type_id`,
- 1 AS `event_type_name`,
- 1 AS `description`,
- 1 AS `default_package_status_name`,
- 1 AS `is_entry_event`,
- 1 AS `is_exit_event`,
- 1 AS `is_processing_event`,
- 1 AS `is_delay_event`,
- 1 AS `is_final_event`,
- 1 AS `sort_order`,
- 1 AS `is_active`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `dim_package`
---
-
-DROP TABLE IF EXISTS `dim_package`;
-/*!50001 DROP VIEW IF EXISTS `dim_package`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `dim_package` AS SELECT 
- 1 AS `package_id`,
+ 1 AS `package_customer_id`,
  1 AS `recipient_customer_id`,
  1 AS `package_flow_type_id`,
  1 AS `package_flow_type_name`,
  1 AS `sender_customer_id`,
  1 AS `sender_business_id`,
- 1 AS `service_type_id`,
- 1 AS `package_status_id`,
- 1 AS `received_date`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `vw_package_overview`
---
-
-DROP TABLE IF EXISTS `vw_package_overview`;
-/*!50001 DROP VIEW IF EXISTS `vw_package_overview`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `vw_package_overview` AS SELECT 
- 1 AS `package_id`,
- 1 AS `recipient_customer_id`,
- 1 AS `recipient_customer_name`,
- 1 AS `recipient_customer_email`,
- 1 AS `package_flow_type_name`,
- 1 AS `sender_customer_id`,
- 1 AS `sender_customer_name`,
- 1 AS `sender_business_id`,
- 1 AS `sender_business_name`,
- 1 AS `package_status`,
- 1 AS `service_type_name`,
- 1 AS `received_date`,
- 1 AS `contents`,
- 1 AS `weight_lbs`,
- 1 AS `length_in`,
- 1 AS `width_in`,
- 1 AS `height_in`,
- 1 AS `employee_id`,
- 1 AS `handled_by_employee`,
- 1 AS `created_at`,
- 1 AS `updated_at`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `vw_customer_accounts`
---
-
-DROP TABLE IF EXISTS `vw_customer_accounts`;
-/*!50001 DROP VIEW IF EXISTS `vw_customer_accounts`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `vw_customer_accounts` AS SELECT 
- 1 AS `customer_id`,
- 1 AS `customer_name`,
- 1 AS `customer_email`,
- 1 AS `preferred_facility_id`,
- 1 AS `preferred_facility_name`,
- 1 AS `user_id`,
- 1 AS `username`,
- 1 AS `login_email`,
- 1 AS `is_active`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `vw_package_facility_stays`
---
-
-DROP TABLE IF EXISTS `vw_package_facility_stays`;
-/*!50001 DROP VIEW IF EXISTS `vw_package_facility_stays`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `vw_package_facility_stays` AS SELECT 
- 1 AS `package_id`,
- 1 AS `entry_package_movement_id`,
- 1 AS `facility_id`,
- 1 AS `facility_name`,
- 1 AS `facility_type_code`,
- 1 AS `facility_type_name`,
- 1 AS `arrived_at`,
- 1 AS `departed_at`,
- 1 AS `dwell_minutes`,
- 1 AS `is_current_facility`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `dim_package_flow_type`
---
-
-DROP TABLE IF EXISTS `dim_package_flow_type`;
-/*!50001 DROP VIEW IF EXISTS `dim_package_flow_type`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `dim_package_flow_type` AS SELECT 
- 1 AS `package_flow_type_id`,
- 1 AS `package_flow_type_name`,
- 1 AS `is_active`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `vw_facility_map`
---
-
-DROP TABLE IF EXISTS `vw_facility_map`;
-/*!50001 DROP VIEW IF EXISTS `vw_facility_map`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `vw_facility_map` AS SELECT 
- 1 AS `facility_id`,
- 1 AS `facility_name`,
- 1 AS `facility_type_code`,
- 1 AS `facility_type_name`,
- 1 AS `street_address`,
- 1 AS `city`,
- 1 AS `county`,
- 1 AS `state_code`,
- 1 AS `zip_code`,
- 1 AS `map_zip_code`,
- 1 AS `latitude`,
- 1 AS `longitude`,
- 1 AS `full_address`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `vw_facility_processing_counts`
---
-
-DROP TABLE IF EXISTS `vw_facility_processing_counts`;
-/*!50001 DROP VIEW IF EXISTS `vw_facility_processing_counts`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `vw_facility_processing_counts` AS SELECT 
- 1 AS `facility_id`,
- 1 AS `facility_name`,
- 1 AS `facility_type_code`,
- 1 AS `facility_type_name`,
- 1 AS `movement_event_count`,
- 1 AS `processing_event_count`,
- 1 AS `packages_processed`,
- 1 AS `most_recent_processed_at`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `vw_package_route_plan_actual_movement`
---
-
-DROP TABLE IF EXISTS `vw_package_route_plan_actual_movement`;
-/*!50001 DROP VIEW IF EXISTS `vw_package_route_plan_actual_movement`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `vw_package_route_plan_actual_movement` AS SELECT 
- 1 AS `package_id`,
- 1 AS `service_type_name`,
- 1 AS `destination_purpose`,
- 1 AS `planned_origin_facility_id`,
- 1 AS `planned_origin_facility_name`,
- 1 AS `planned_destination_facility_id`,
- 1 AS `planned_destination_facility_name`,
- 1 AS `latest_package_movement_id`,
- 1 AS `latest_event_type_name`,
- 1 AS `latest_status_name`,
- 1 AS `latest_facility_id`,
- 1 AS `latest_facility_name`,
- 1 AS `latest_from_facility_id`,
- 1 AS `latest_to_facility_id`,
- 1 AS `latest_event_timestamp`,
- 1 AS `route_alignment_status`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `vw_facility_delay_totals`
---
-
-DROP TABLE IF EXISTS `vw_facility_delay_totals`;
-/*!50001 DROP VIEW IF EXISTS `vw_facility_delay_totals`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `vw_facility_delay_totals` AS SELECT 
- 1 AS `facility_id`,
- 1 AS `facility_name`,
- 1 AS `delay_event_count`,
- 1 AS `delayed_package_count`,
- 1 AS `total_delay_minutes`,
- 1 AS `avg_delay_minutes`,
- 1 AS `max_delay_minutes`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `vw_user_account_roles`
---
-
-DROP TABLE IF EXISTS `vw_user_account_roles`;
-/*!50001 DROP VIEW IF EXISTS `vw_user_account_roles`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `vw_user_account_roles` AS SELECT 
- 1 AS `user_id`,
- 1 AS `username`,
- 1 AS `email`,
- 1 AS `is_active`,
- 1 AS `first_name`,
- 1 AS `last_name`,
- 1 AS `role_id`,
- 1 AS `role_name`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `dim_incident_type`
---
-
-DROP TABLE IF EXISTS `dim_incident_type`;
-/*!50001 DROP VIEW IF EXISTS `dim_incident_type`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `dim_incident_type` AS SELECT 
- 1 AS `incident_type_id`,
- 1 AS `type_name`,
- 1 AS `type_category`,
- 1 AS `is_active`*/;
+ 1 AS `locker_customer_id`,
+ 1 AS `assigned_datetime`,
+ 1 AS `expiration_datetime`,
+ 1 AS `retrieved_datetime`,
+ 1 AS `locker_assignment_count`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -760,81 +560,23 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary view structure for view `fact_shipping_revenue`
+-- Temporary view structure for view `dim_territory`
 --
 
-DROP TABLE IF EXISTS `fact_shipping_revenue`;
-/*!50001 DROP VIEW IF EXISTS `fact_shipping_revenue`*/;
+DROP TABLE IF EXISTS `dim_territory`;
+/*!50001 DROP VIEW IF EXISTS `dim_territory`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `fact_shipping_revenue` AS SELECT 
- 1 AS `package_id`,
- 1 AS `customer_id`,
- 1 AS `recipient_customer_id`,
- 1 AS `package_flow_type_id`,
- 1 AS `package_flow_type_name`,
- 1 AS `sender_customer_id`,
- 1 AS `sender_business_id`,
- 1 AS `customer_territory_id`,
- 1 AS `received_by_employee_id`,
- 1 AS `service_type_id`,
- 1 AS `package_status_id`,
- 1 AS `revenue_datetime`,
- 1 AS `gross_shipping_revenue`,
- 1 AS `material_cost`,
- 1 AS `transportation_cost`,
- 1 AS `total_internal_shipping_cost`,
- 1 AS `estimated_shipping_margin`,
- 1 AS `charge_source`,
- 1 AS `charge_recorded_at`,
- 1 AS `shipping_charge_count`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `fact_refund`
---
-
-DROP TABLE IF EXISTS `fact_refund`;
-/*!50001 DROP VIEW IF EXISTS `fact_refund`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `fact_refund` AS SELECT 
- 1 AS `refund_id`,
- 1 AS `package_id`,
- 1 AS `customer_id`,
- 1 AS `customer_territory_id`,
- 1 AS `incident_id`,
- 1 AS `refund_facility_id`,
- 1 AS `refund_facility_territory_id`,
- 1 AS `reported_by_employee_id`,
- 1 AS `employee_territory_id`,
- 1 AS `incident_type_id`,
- 1 AS `incident_severity_id`,
- 1 AS `incident_status_id`,
- 1 AS `service_type_id`,
- 1 AS `refund_datetime`,
- 1 AS `refund_amount`,
- 1 AS `refund_status`,
- 1 AS `refund_count`*/;
-SET character_set_client = @saved_cs_client;
-
---
--- Temporary view structure for view `dim_locker_location`
---
-
-DROP TABLE IF EXISTS `dim_locker_location`;
-/*!50001 DROP VIEW IF EXISTS `dim_locker_location`*/;
-SET @saved_cs_client     = @@character_set_client;
-/*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `dim_locker_location` AS SELECT 
- 1 AS `locker_location_id`,
- 1 AS `location_name`,
- 1 AS `facility_id`,
- 1 AS `facility_territory_id`,
- 1 AS `facility_name`,
+/*!50001 CREATE VIEW `dim_territory` AS SELECT 
+ 1 AS `territory_id`,
+ 1 AS `state`,
  1 AS `city`,
- 1 AS `state_code`,
- 1 AS `zip_code`*/;
+ 1 AS `county`,
+ 1 AS `zip_code`,
+ 1 AS `latitude`,
+ 1 AS `longitude`,
+ 1 AS `created_at`,
+ 1 AS `updated_at`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -872,6 +614,261 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `dim_incident_severity`
+--
+
+DROP TABLE IF EXISTS `dim_incident_severity`;
+/*!50001 DROP VIEW IF EXISTS `dim_incident_severity`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `dim_incident_severity` AS SELECT 
+ 1 AS `incident_severity_id`,
+ 1 AS `severity_name`,
+ 1 AS `sort_order`,
+ 1 AS `is_active`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `vw_package_route_history`
+--
+
+DROP TABLE IF EXISTS `vw_package_route_history`;
+/*!50001 DROP VIEW IF EXISTS `vw_package_route_history`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_package_route_history` AS SELECT 
+ 1 AS `package_movement_id`,
+ 1 AS `package_id`,
+ 1 AS `event_timestamp`,
+ 1 AS `event_type_name`,
+ 1 AS `package_status`,
+ 1 AS `facility_id`,
+ 1 AS `facility_name`,
+ 1 AS `facility_type_code`,
+ 1 AS `facility_type_name`,
+ 1 AS `from_facility_id`,
+ 1 AS `from_facility_name`,
+ 1 AS `to_facility_id`,
+ 1 AS `to_facility_name`,
+ 1 AS `processed_by_employee_id`,
+ 1 AS `processed_by_employee`,
+ 1 AS `expected_event_at`,
+ 1 AS `delay_minutes`,
+ 1 AS `delay_reason`,
+ 1 AS `movement_note`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `dim_package`
+--
+
+DROP TABLE IF EXISTS `dim_package`;
+/*!50001 DROP VIEW IF EXISTS `dim_package`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `dim_package` AS SELECT 
+ 1 AS `package_id`,
+ 1 AS `recipient_customer_id`,
+ 1 AS `package_flow_type_id`,
+ 1 AS `package_flow_type_name`,
+ 1 AS `sender_customer_id`,
+ 1 AS `sender_business_id`,
+ 1 AS `service_type_id`,
+ 1 AS `package_status_id`,
+ 1 AS `received_date`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `fact_package`
+--
+
+DROP TABLE IF EXISTS `fact_package`;
+/*!50001 DROP VIEW IF EXISTS `fact_package`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `fact_package` AS SELECT 
+ 1 AS `package_id`,
+ 1 AS `customer_id`,
+ 1 AS `recipient_customer_id`,
+ 1 AS `package_flow_type_id`,
+ 1 AS `package_flow_type_name`,
+ 1 AS `sender_customer_id`,
+ 1 AS `sender_business_id`,
+ 1 AS `service_type_id`,
+ 1 AS `package_status_id`,
+ 1 AS `received_facility_id`,
+ 1 AS `received_facility_territory_id`,
+ 1 AS `received_by_employee_id`,
+ 1 AS `received_datetime`,
+ 1 AS `weight_lbs`,
+ 1 AS `length_in`,
+ 1 AS `width_in`,
+ 1 AS `height_in`,
+ 1 AS `package_volume_cubic_in`,
+ 1 AS `package_count`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `vw_facility_processing_counts`
+--
+
+DROP TABLE IF EXISTS `vw_facility_processing_counts`;
+/*!50001 DROP VIEW IF EXISTS `vw_facility_processing_counts`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_facility_processing_counts` AS SELECT 
+ 1 AS `facility_id`,
+ 1 AS `facility_name`,
+ 1 AS `facility_type_code`,
+ 1 AS `facility_type_name`,
+ 1 AS `movement_event_count`,
+ 1 AS `processing_event_count`,
+ 1 AS `packages_processed`,
+ 1 AS `most_recent_processed_at`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `dim_employee`
+--
+
+DROP TABLE IF EXISTS `dim_employee`;
+/*!50001 DROP VIEW IF EXISTS `dim_employee`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `dim_employee` AS SELECT 
+ 1 AS `employee_id`,
+ 1 AS `employee_name`,
+ 1 AS `job_title`,
+ 1 AS `department_id`,
+ 1 AS `department_name`,
+ 1 AS `facility_id`,
+ 1 AS `facility_territory_id`,
+ 1 AS `facility_name`,
+ 1 AS `manager_employee_id`,
+ 1 AS `is_manager`,
+ 1 AS `hours_worked`,
+ 1 AS `employee_created_date`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `vw_facility_delay_totals`
+--
+
+DROP TABLE IF EXISTS `vw_facility_delay_totals`;
+/*!50001 DROP VIEW IF EXISTS `vw_facility_delay_totals`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_facility_delay_totals` AS SELECT 
+ 1 AS `facility_id`,
+ 1 AS `facility_name`,
+ 1 AS `delay_event_count`,
+ 1 AS `delayed_package_count`,
+ 1 AS `total_delay_minutes`,
+ 1 AS `avg_delay_minutes`,
+ 1 AS `max_delay_minutes`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `vw_package_route_plan_actual_movement`
+--
+
+DROP TABLE IF EXISTS `vw_package_route_plan_actual_movement`;
+/*!50001 DROP VIEW IF EXISTS `vw_package_route_plan_actual_movement`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_package_route_plan_actual_movement` AS SELECT 
+ 1 AS `package_id`,
+ 1 AS `service_type_name`,
+ 1 AS `destination_purpose`,
+ 1 AS `planned_origin_facility_id`,
+ 1 AS `planned_origin_facility_name`,
+ 1 AS `planned_destination_facility_id`,
+ 1 AS `planned_destination_facility_name`,
+ 1 AS `latest_package_movement_id`,
+ 1 AS `latest_event_type_name`,
+ 1 AS `latest_status_name`,
+ 1 AS `latest_facility_id`,
+ 1 AS `latest_facility_name`,
+ 1 AS `latest_from_facility_id`,
+ 1 AS `latest_to_facility_id`,
+ 1 AS `latest_event_timestamp`,
+ 1 AS `route_alignment_status`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `fact_incident`
+--
+
+DROP TABLE IF EXISTS `fact_incident`;
+/*!50001 DROP VIEW IF EXISTS `fact_incident`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `fact_incident` AS SELECT 
+ 1 AS `incident_id`,
+ 1 AS `package_id`,
+ 1 AS `customer_id`,
+ 1 AS `customer_territory_id`,
+ 1 AS `reported_by_employee_id`,
+ 1 AS `employee_territory_id`,
+ 1 AS `facility_id`,
+ 1 AS `facility_territory_id`,
+ 1 AS `package_movement_id`,
+ 1 AS `incident_type_id`,
+ 1 AS `incident_severity_id`,
+ 1 AS `incident_status_id`,
+ 1 AS `incident_datetime`,
+ 1 AS `incident_count`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `dim_service_type`
+--
+
+DROP TABLE IF EXISTS `dim_service_type`;
+/*!50001 DROP VIEW IF EXISTS `dim_service_type`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `dim_service_type` AS SELECT 
+ 1 AS `service_type_id`,
+ 1 AS `service_type_name`,
+ 1 AS `service_category`,
+ 1 AS `is_active`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `dim_package_flow_type`
+--
+
+DROP TABLE IF EXISTS `dim_package_flow_type`;
+/*!50001 DROP VIEW IF EXISTS `dim_package_flow_type`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `dim_package_flow_type` AS SELECT 
+ 1 AS `package_flow_type_id`,
+ 1 AS `package_flow_type_name`,
+ 1 AS `is_active`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `vw_customer_id_hex_lookup`
+--
+
+DROP TABLE IF EXISTS `vw_customer_id_hex_lookup`;
+/*!50001 DROP VIEW IF EXISTS `vw_customer_id_hex_lookup`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_customer_id_hex_lookup` AS SELECT 
+ 1 AS `customer_id_hex`,
+ 1 AS `customer_id`,
+ 1 AS `first_name`,
+ 1 AS `last_name`,
+ 1 AS `email`,
+ 1 AS `city`,
+ 1 AS `state_code`,
+ 1 AS `zip_code`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `vw_package_revenue`
 --
 
@@ -901,57 +898,60 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary view structure for view `fact_smartlocker_assignment`
+-- Temporary view structure for view `fact_shipping_revenue`
 --
 
-DROP TABLE IF EXISTS `fact_smartlocker_assignment`;
-/*!50001 DROP VIEW IF EXISTS `fact_smartlocker_assignment`*/;
+DROP TABLE IF EXISTS `fact_shipping_revenue`;
+/*!50001 DROP VIEW IF EXISTS `fact_shipping_revenue`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `fact_smartlocker_assignment` AS SELECT 
- 1 AS `locker_assignment_id`,
+/*!50001 CREATE VIEW `fact_shipping_revenue` AS SELECT 
  1 AS `package_id`,
- 1 AS `locker_id`,
- 1 AS `locker_location_id`,
- 1 AS `facility_id`,
- 1 AS `facility_territory_id`,
- 1 AS `package_customer_id`,
+ 1 AS `customer_id`,
  1 AS `recipient_customer_id`,
  1 AS `package_flow_type_id`,
  1 AS `package_flow_type_name`,
  1 AS `sender_customer_id`,
  1 AS `sender_business_id`,
- 1 AS `locker_customer_id`,
- 1 AS `assigned_datetime`,
- 1 AS `expiration_datetime`,
- 1 AS `retrieved_datetime`,
- 1 AS `locker_assignment_count`*/;
+ 1 AS `customer_territory_id`,
+ 1 AS `received_by_employee_id`,
+ 1 AS `service_type_id`,
+ 1 AS `package_status_id`,
+ 1 AS `revenue_datetime`,
+ 1 AS `gross_shipping_revenue`,
+ 1 AS `material_cost`,
+ 1 AS `transportation_cost`,
+ 1 AS `total_internal_shipping_cost`,
+ 1 AS `estimated_shipping_margin`,
+ 1 AS `charge_source`,
+ 1 AS `charge_recorded_at`,
+ 1 AS `shipping_charge_count`*/;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary view structure for view `dim_department`
+-- Temporary view structure for view `vw_user_account_roles`
 --
 
-DROP TABLE IF EXISTS `dim_department`;
-/*!50001 DROP VIEW IF EXISTS `dim_department`*/;
+DROP TABLE IF EXISTS `vw_user_account_roles`;
+/*!50001 DROP VIEW IF EXISTS `vw_user_account_roles`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `dim_department` AS SELECT 
- 1 AS `department_id`,
- 1 AS `department_name`,
- 1 AS `facility_id`,
- 1 AS `facility_territory_id`,
- 1 AS `facility_name`,
- 1 AS `manager_employee_id`,
- 1 AS `manager_start_date`,
- 1 AS `department_created_date`*/;
+/*!50001 CREATE VIEW `vw_user_account_roles` AS SELECT 
+ 1 AS `user_id`,
+ 1 AS `username`,
+ 1 AS `email`,
+ 1 AS `is_active`,
+ 1 AS `first_name`,
+ 1 AS `last_name`,
+ 1 AS `role_id`,
+ 1 AS `role_name`*/;
 SET character_set_client = @saved_cs_client;
 
 --
--- Final view structure for view `vw_customer_id_hex_lookup`
+-- Final view structure for view `dim_facility`
 --
 
-/*!50001 DROP VIEW IF EXISTS `vw_customer_id_hex_lookup`*/;
+/*!50001 DROP VIEW IF EXISTS `dim_facility`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
@@ -960,151 +960,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_customer_id_hex_lookup` AS select hex(`customer`.`customer_id`) AS `customer_id_hex`,`customer`.`customer_id` AS `customer_id`,`customer`.`first_name` AS `first_name`,`customer`.`last_name` AS `last_name`,`customer`.`email` AS `email`,`customer`.`city` AS `city`,`customer`.`state_code` AS `state_code`,`customer`.`zip_code` AS `zip_code` from `customer` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `dim_territory`
---
-
-/*!50001 DROP VIEW IF EXISTS `dim_territory`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY INVOKER */
-/*!50001 VIEW `dim_territory` AS select `t`.`territory_id` AS `territory_id`,`t`.`state` AS `state`,`t`.`city` AS `city`,`t`.`county` AS `county`,`t`.`zip_code` AS `zip_code`,`z`.`latitude` AS `latitude`,`z`.`longitude` AS `longitude`,`t`.`created_at` AS `created_at`,`t`.`updated_at` AS `updated_at` from (`territory` `t` left join `zip_geo` `z` on((`z`.`zip_code` = `t`.`zip_code`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `vw_incident_movement_summary`
---
-
-/*!50001 DROP VIEW IF EXISTS `vw_incident_movement_summary`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_incident_movement_summary` AS select `i`.`incident_id` AS `incident_id`,`i`.`incident_date` AS `incident_date`,`i`.`description` AS `description`,`it`.`type_name` AS `incident_type`,`it`.`type_category` AS `type_category`,`sev`.`severity_name` AS `severity_name`,`ist`.`status_name` AS `incident_status`,`i`.`reported_by_employee_id` AS `reported_by_employee_id`,`e`.`full_name` AS `reported_by_employee`,`i`.`package_id` AS `package_id`,`i`.`package_movement_id` AS `package_movement_id`,`met`.`event_type_name` AS `movement_event_type`,`i`.`customer_id` AS `customer_id`,concat(`c`.`first_name`,' ',`c`.`last_name`) AS `customer_name`,`i`.`facility_id` AS `facility_id`,`f`.`facility_name` AS `facility_name`,`ft`.`facility_type_code` AS `facility_type_code`,`ft`.`facility_type_name` AS `facility_type_name` from (((((((((`incident` `i` join `incident_type` `it` on((`i`.`incident_type_id` = `it`.`incident_type_id`))) join `incident_severity` `sev` on((`i`.`incident_severity_id` = `sev`.`incident_severity_id`))) join `incident_status` `ist` on((`i`.`incident_status_id` = `ist`.`incident_status_id`))) join `employee` `e` on((`i`.`reported_by_employee_id` = `e`.`employee_id`))) left join `package_movement` `pm` on((`i`.`package_movement_id` = `pm`.`package_movement_id`))) left join `package_movement_event_type` `met` on((`pm`.`package_movement_event_type_id` = `met`.`package_movement_event_type_id`))) left join `customer` `c` on((`i`.`customer_id` = `c`.`customer_id`))) left join `facility` `f` on((`i`.`facility_id` = `f`.`facility_id`))) left join `facility_type` `ft` on((`f`.`facility_type_id` = `ft`.`facility_type_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `vw_incident_summary`
---
-
-/*!50001 DROP VIEW IF EXISTS `vw_incident_summary`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_incident_summary` AS select `i`.`incident_id` AS `incident_id`,`i`.`incident_date` AS `incident_date`,`i`.`description` AS `description`,`it`.`type_name` AS `incident_type`,`it`.`type_category` AS `type_category`,`sev`.`severity_name` AS `severity_name`,`sev`.`sort_order` AS `severity_order`,`ist`.`status_name` AS `incident_status`,`ist`.`is_closed_status` AS `is_closed_status`,`i`.`reported_by_employee_id` AS `reported_by_employee_id`,`e`.`full_name` AS `reported_by_employee`,`i`.`package_id` AS `package_id`,`i`.`customer_id` AS `customer_id`,concat(`c`.`first_name`,' ',`c`.`last_name`) AS `customer_name`,`i`.`facility_id` AS `facility_id`,`f`.`facility_name` AS `facility_name` from ((((((`incident` `i` join `incident_type` `it` on((`i`.`incident_type_id` = `it`.`incident_type_id`))) join `incident_severity` `sev` on((`i`.`incident_severity_id` = `sev`.`incident_severity_id`))) join `incident_status` `ist` on((`i`.`incident_status_id` = `ist`.`incident_status_id`))) join `employee` `e` on((`i`.`reported_by_employee_id` = `e`.`employee_id`))) left join `customer` `c` on((`i`.`customer_id` = `c`.`customer_id`))) left join `facility` `f` on((`i`.`facility_id` = `f`.`facility_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `fact_package`
---
-
-/*!50001 DROP VIEW IF EXISTS `fact_package`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `fact_package` AS select `p`.`package_id` AS `package_id`,`p`.`recipient_customer_id` AS `customer_id`,`p`.`recipient_customer_id` AS `recipient_customer_id`,`p`.`package_flow_type_id` AS `package_flow_type_id`,`pft`.`package_flow_type_name` AS `package_flow_type_name`,`p`.`sender_customer_id` AS `sender_customer_id`,`p`.`sender_business_id` AS `sender_business_id`,`p`.`service_type_id` AS `service_type_id`,`p`.`package_status_id` AS `package_status_id`,`d`.`facility_id` AS `received_facility_id`,`f`.`territory_id` AS `received_facility_territory_id`,`p`.`employee_id` AS `received_by_employee_id`,`p`.`received_date` AS `received_datetime`,`p`.`weight_lbs` AS `weight_lbs`,`p`.`length_in` AS `length_in`,`p`.`width_in` AS `width_in`,`p`.`height_in` AS `height_in`,(case when ((`p`.`length_in` is not null) and (`p`.`width_in` is not null) and (`p`.`height_in` is not null)) then ((`p`.`length_in` * `p`.`width_in`) * `p`.`height_in`) else NULL end) AS `package_volume_cubic_in`,1 AS `package_count` from ((((`package` `p` join `package_flow_type` `pft` on((`pft`.`package_flow_type_id` = `p`.`package_flow_type_id`))) left join `employee` `e` on((`e`.`employee_id` = `p`.`employee_id`))) left join `departments` `d` on((`d`.`department_id` = `e`.`department_id`))) left join `facility` `f` on((`f`.`facility_id` = `d`.`facility_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `dim_employee`
---
-
-/*!50001 DROP VIEW IF EXISTS `dim_employee`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `dim_employee` AS select `e`.`employee_id` AS `employee_id`,`e`.`full_name` AS `employee_name`,`e`.`job_title` AS `job_title`,`e`.`department_id` AS `department_id`,`d`.`department_name` AS `department_name`,`d`.`facility_id` AS `facility_id`,`f`.`territory_id` AS `facility_territory_id`,`f`.`facility_name` AS `facility_name`,`e`.`manager_employee_id` AS `manager_employee_id`,(case when (exists(select 1 from `employee` `e2` where (`e2`.`manager_employee_id` = `e`.`employee_id`)) or exists(select 1 from `departments` `d2` where (`d2`.`manager_employee_id` = `e`.`employee_id`)) or (`f`.`manager_employee_id` = `e`.`employee_id`)) then 1 else 0 end) AS `is_manager`,`e`.`hours_worked` AS `hours_worked`,cast(`e`.`created_at` as date) AS `employee_created_date` from ((`employee` `e` left join `departments` `d` on((`d`.`department_id` = `e`.`department_id`))) left join `facility` `f` on((`f`.`facility_id` = `d`.`facility_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `dim_customer`
---
-
-/*!50001 DROP VIEW IF EXISTS `dim_customer`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `dim_customer` AS select `c`.`customer_id` AS `customer_id`,`c`.`territory_id` AS `territory_id`,`c`.`first_name` AS `first_name`,`c`.`middle_initial` AS `middle_initial`,`c`.`last_name` AS `last_name`,trim(concat(`c`.`first_name`,' ',coalesce(concat(`c`.`middle_initial`,'. '),''),`c`.`last_name`)) AS `customer_name`,`c`.`city` AS `city`,`c`.`state_code` AS `state_code`,`c`.`zip_code` AS `zip_code`,`c`.`preferred_facility_id` AS `preferred_facility_id`,`pf`.`territory_id` AS `preferred_facility_territory_id`,`c`.`birth_date` AS `birth_date`,timestampdiff(YEAR,`c`.`birth_date`,curdate()) AS `age_years`,`c`.`marital_status` AS `marital_status`,`c`.`gender` AS `gender`,`c`.`email_address` AS `email_address`,`c`.`annual_income` AS `annual_income`,`c`.`total_children` AS `total_children`,`c`.`education_level` AS `education_level`,`c`.`occupation` AS `occupation`,`c`.`home_owner` AS `home_owner`,cast(`c`.`created_at` as date) AS `customer_created_date` from (`customer` `c` left join `facility` `pf` on((`pf`.`facility_id` = `c`.`preferred_facility_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `vw_package_delay_summary`
---
-
-/*!50001 DROP VIEW IF EXISTS `vw_package_delay_summary`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_package_delay_summary` AS select `pm`.`package_movement_id` AS `package_movement_id`,`pm`.`package_id` AS `package_id`,`pm`.`event_timestamp` AS `event_timestamp`,coalesce(`pm`.`facility_id`,`pm`.`from_facility_id`,`pm`.`to_facility_id`) AS `delay_facility_id`,coalesce(`f`.`facility_name`,`from_f`.`facility_name`,`to_f`.`facility_name`) AS `delay_facility_name`,`met`.`event_type_name` AS `event_type_name`,`pm`.`expected_event_at` AS `expected_event_at`,`pm`.`delay_minutes` AS `delay_minutes`,`pm`.`delay_reason` AS `delay_reason`,`pm`.`movement_note` AS `movement_note` from ((((`package_movement` `pm` join `package_movement_event_type` `met` on((`pm`.`package_movement_event_type_id` = `met`.`package_movement_event_type_id`))) left join `facility` `f` on((`pm`.`facility_id` = `f`.`facility_id`))) left join `facility` `from_f` on((`pm`.`from_facility_id` = `from_f`.`facility_id`))) left join `facility` `to_f` on((`pm`.`to_facility_id` = `to_f`.`facility_id`))) where ((`met`.`is_delay_event` = 1) or (`pm`.`delay_minutes` > 0)) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `dim_package_status`
---
-
-/*!50001 DROP VIEW IF EXISTS `dim_package_status`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `dim_package_status` AS select `ps`.`package_status_id` AS `package_status_id`,`ps`.`status_name` AS `status_name`,`ps`.`status_category` AS `status_category`,`ps`.`sort_order` AS `sort_order`,`ps`.`is_final_status` AS `is_final_status`,`ps`.`is_active` AS `is_active` from `package_status` `ps` */;
+/*!50001 VIEW `dim_facility` AS select `f`.`facility_id` AS `facility_id`,`f`.`territory_id` AS `territory_id`,`f`.`facility_name` AS `facility_name`,`f`.`facility_type_id` AS `facility_type_id`,`ft`.`facility_type_code` AS `facility_type_code`,`ft`.`facility_type_name` AS `facility_type_name`,`ft`.`description` AS `facility_type_description`,`f`.`city` AS `city`,`f`.`state_code` AS `state_code`,`f`.`zip_code` AS `zip_code`,`f`.`manager_employee_id` AS `manager_employee_id`,`ft`.`is_customer_facing` AS `is_customer_facing`,`ft`.`handles_retail` AS `handles_retail`,`ft`.`handles_processing` AS `handles_processing`,`ft`.`handles_distribution` AS `handles_distribution`,`ft`.`handles_local_delivery` AS `handles_local_delivery`,`ft`.`is_active` AS `facility_type_is_active`,(case when (`ft`.`handles_retail` = 1) then 1 else 0 end) AS `is_retail_office`,(case when ((`ft`.`handles_processing` = 1) or (`ft`.`handles_distribution` = 1)) then 1 else 0 end) AS `is_processing_or_distribution_center` from (`facility` `f` left join `facility_type` `ft` on((`ft`.`facility_type_id` = `f`.`facility_type_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1128,10 +984,10 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
--- Final view structure for view `dim_smartlocker`
+-- Final view structure for view `dim_locker_location`
 --
 
-/*!50001 DROP VIEW IF EXISTS `dim_smartlocker`*/;
+/*!50001 DROP VIEW IF EXISTS `dim_locker_location`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
@@ -1140,205 +996,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `dim_smartlocker` AS select `sl`.`locker_id` AS `locker_id`,`sl`.`locker_location_id` AS `locker_location_id`,`ll`.`location_name` AS `location_name`,`ll`.`facility_id` AS `facility_id`,`f`.`territory_id` AS `facility_territory_id`,`f`.`facility_name` AS `facility_name`,`sl`.`locker_status` AS `locker_status`,cast(`sl`.`created_at` as date) AS `locker_created_date` from ((`smartlocker` `sl` left join `lockerlocations` `ll` on((`ll`.`locker_location_id` = `sl`.`locker_location_id`))) left join `facility` `f` on((`f`.`facility_id` = `ll`.`facility_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `vw_employee_facility_assignment`
---
-
-/*!50001 DROP VIEW IF EXISTS `vw_employee_facility_assignment`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_employee_facility_assignment` AS select `e`.`employee_id` AS `employee_id`,`e`.`full_name` AS `full_name`,`e`.`email` AS `email`,`e`.`phone_number` AS `phone_number`,`e`.`job_title` AS `job_title`,`e`.`department_id` AS `department_id`,`d`.`department_name` AS `department_name`,`d`.`facility_id` AS `facility_id`,`f`.`facility_name` AS `facility_name`,`ft`.`facility_type_code` AS `facility_type_code`,`ft`.`facility_type_name` AS `facility_type_name`,`e`.`manager_employee_id` AS `manager_employee_id`,`m`.`full_name` AS `manager_name`,`e`.`salary` AS `salary`,`e`.`hours_worked` AS `hours_worked`,`e`.`user_id` AS `user_id`,`e`.`created_at` AS `created_at`,`e`.`updated_at` AS `updated_at` from ((((`employee` `e` join `departments` `d` on((`e`.`department_id` = `d`.`department_id`))) left join `facility` `f` on((`d`.`facility_id` = `f`.`facility_id`))) left join `facility_type` `ft` on((`f`.`facility_type_id` = `ft`.`facility_type_id`))) left join `employee` `m` on((`e`.`manager_employee_id` = `m`.`employee_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `vw_package_route_history`
---
-
-/*!50001 DROP VIEW IF EXISTS `vw_package_route_history`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_package_route_history` AS select `pm`.`package_movement_id` AS `package_movement_id`,`pm`.`package_id` AS `package_id`,`pm`.`event_timestamp` AS `event_timestamp`,`met`.`event_type_name` AS `event_type_name`,`ps`.`status_name` AS `package_status`,`pm`.`facility_id` AS `facility_id`,`f`.`facility_name` AS `facility_name`,`ft`.`facility_type_code` AS `facility_type_code`,`ft`.`facility_type_name` AS `facility_type_name`,`pm`.`from_facility_id` AS `from_facility_id`,`from_f`.`facility_name` AS `from_facility_name`,`pm`.`to_facility_id` AS `to_facility_id`,`to_f`.`facility_name` AS `to_facility_name`,`pm`.`processed_by_employee_id` AS `processed_by_employee_id`,`e`.`full_name` AS `processed_by_employee`,`pm`.`expected_event_at` AS `expected_event_at`,`pm`.`delay_minutes` AS `delay_minutes`,`pm`.`delay_reason` AS `delay_reason`,`pm`.`movement_note` AS `movement_note` from (((((((`package_movement` `pm` join `package_movement_event_type` `met` on((`pm`.`package_movement_event_type_id` = `met`.`package_movement_event_type_id`))) join `package_status` `ps` on((`pm`.`package_status_id` = `ps`.`package_status_id`))) left join `facility` `f` on((`pm`.`facility_id` = `f`.`facility_id`))) left join `facility_type` `ft` on((`f`.`facility_type_id` = `ft`.`facility_type_id`))) left join `facility` `from_f` on((`pm`.`from_facility_id` = `from_f`.`facility_id`))) left join `facility` `to_f` on((`pm`.`to_facility_id` = `to_f`.`facility_id`))) left join `employee` `e` on((`pm`.`processed_by_employee_id` = `e`.`employee_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `fact_incident`
---
-
-/*!50001 DROP VIEW IF EXISTS `fact_incident`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `fact_incident` AS select `i`.`incident_id` AS `incident_id`,`i`.`package_id` AS `package_id`,`i`.`customer_id` AS `customer_id`,`c`.`territory_id` AS `customer_territory_id`,`i`.`reported_by_employee_id` AS `reported_by_employee_id`,`ef`.`territory_id` AS `employee_territory_id`,`i`.`facility_id` AS `facility_id`,`inf`.`territory_id` AS `facility_territory_id`,`i`.`package_movement_id` AS `package_movement_id`,`i`.`incident_type_id` AS `incident_type_id`,`i`.`incident_severity_id` AS `incident_severity_id`,`i`.`incident_status_id` AS `incident_status_id`,`i`.`incident_date` AS `incident_datetime`,1 AS `incident_count` from (((((`incident` `i` left join `customer` `c` on((`c`.`customer_id` = `i`.`customer_id`))) left join `employee` `e` on((`e`.`employee_id` = `i`.`reported_by_employee_id`))) left join `departments` `d` on((`d`.`department_id` = `e`.`department_id`))) left join `facility` `ef` on((`ef`.`facility_id` = `d`.`facility_id`))) left join `facility` `inf` on((`inf`.`facility_id` = `i`.`facility_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `vw_package_id_hex_lookup`
---
-
-/*!50001 DROP VIEW IF EXISTS `vw_package_id_hex_lookup`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_package_id_hex_lookup` AS select hex(`p`.`package_id`) AS `package_id_hex`,`p`.`package_id` AS `package_id`,hex(`p`.`recipient_customer_id`) AS `recipient_customer_id_hex`,`p`.`recipient_customer_id` AS `recipient_customer_id`,`p`.`package_flow_type_id` AS `package_flow_type_id`,`pft`.`package_flow_type_name` AS `package_flow_type_name`,hex(`p`.`sender_customer_id`) AS `sender_customer_id_hex`,`p`.`sender_customer_id` AS `sender_customer_id`,hex(`p`.`sender_business_id`) AS `sender_business_id_hex`,`p`.`sender_business_id` AS `sender_business_id`,`p`.`package_status_id` AS `package_status_id`,`p`.`service_type_id` AS `service_type_id`,`p`.`received_date` AS `received_date` from (`package` `p` join `package_flow_type` `pft` on((`pft`.`package_flow_type_id` = `p`.`package_flow_type_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `dim_incident_severity`
---
-
-/*!50001 DROP VIEW IF EXISTS `dim_incident_severity`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `dim_incident_severity` AS select `ise`.`incident_severity_id` AS `incident_severity_id`,`ise`.`severity_name` AS `severity_name`,`ise`.`sort_order` AS `sort_order`,`ise`.`is_active` AS `is_active` from `incident_severity` `ise` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `dim_service_type`
---
-
-/*!50001 DROP VIEW IF EXISTS `dim_service_type`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `dim_service_type` AS select `st`.`service_type_id` AS `service_type_id`,`st`.`service_type_name` AS `service_type_name`,(case when (lower(`st`.`service_type_name`) like '%delivery%') then 'Delivery' when (lower(`st`.`service_type_name`) like '%locker%') then 'SmartLocker' when (lower(`st`.`service_type_name`) like '%pickup%') then 'Pickup' else 'Other' end) AS `service_category`,`st`.`is_active` AS `is_active` from `service_type` `st` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `vw_facility_lane_counts`
---
-
-/*!50001 DROP VIEW IF EXISTS `vw_facility_lane_counts`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_facility_lane_counts` AS select `pm`.`from_facility_id` AS `from_facility_id`,`from_f`.`facility_name` AS `from_facility_name`,`pm`.`to_facility_id` AS `to_facility_id`,`to_f`.`facility_name` AS `to_facility_name`,count(0) AS `movement_event_count`,count(distinct `pm`.`package_id`) AS `package_count`,min(`pm`.`event_timestamp`) AS `first_moved_at`,max(`pm`.`event_timestamp`) AS `last_moved_at` from ((`package_movement` `pm` join `facility` `from_f` on((`pm`.`from_facility_id` = `from_f`.`facility_id`))) join `facility` `to_f` on((`pm`.`to_facility_id` = `to_f`.`facility_id`))) group by `pm`.`from_facility_id`,`from_f`.`facility_name`,`pm`.`to_facility_id`,`to_f`.`facility_name` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `dim_facility`
---
-
-/*!50001 DROP VIEW IF EXISTS `dim_facility`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `dim_facility` AS select `f`.`facility_id` AS `facility_id`,`f`.`territory_id` AS `territory_id`,`f`.`facility_name` AS `facility_name`,`f`.`facility_type_id` AS `facility_type_id`,`ft`.`facility_type_code` AS `facility_type_code`,`ft`.`facility_type_name` AS `facility_type_name`,`ft`.`description` AS `facility_type_description`,`f`.`city` AS `city`,`f`.`state_code` AS `state_code`,`f`.`zip_code` AS `zip_code`,`f`.`manager_employee_id` AS `manager_employee_id`,`ft`.`is_customer_facing` AS `is_customer_facing`,`ft`.`handles_retail` AS `handles_retail`,`ft`.`handles_processing` AS `handles_processing`,`ft`.`handles_distribution` AS `handles_distribution`,`ft`.`handles_local_delivery` AS `handles_local_delivery`,`ft`.`is_active` AS `facility_type_is_active`,(case when (`ft`.`handles_retail` = 1) then 1 else 0 end) AS `is_retail_office`,(case when ((`ft`.`handles_processing` = 1) or (`ft`.`handles_distribution` = 1)) then 1 else 0 end) AS `is_processing_or_distribution_center` from (`facility` `f` left join `facility_type` `ft` on((`ft`.`facility_type_id` = `f`.`facility_type_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `dim_movement_event_type`
---
-
-/*!50001 DROP VIEW IF EXISTS `dim_movement_event_type`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `dim_movement_event_type` AS select `met`.`package_movement_event_type_id` AS `package_movement_event_type_id`,`met`.`event_type_name` AS `event_type_name`,`met`.`description` AS `description`,`met`.`default_package_status_name` AS `default_package_status_name`,`met`.`is_entry_event` AS `is_entry_event`,`met`.`is_exit_event` AS `is_exit_event`,`met`.`is_processing_event` AS `is_processing_event`,`met`.`is_delay_event` AS `is_delay_event`,`met`.`is_final_event` AS `is_final_event`,`met`.`sort_order` AS `sort_order`,`met`.`is_active` AS `is_active` from `package_movement_event_type` `met` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `dim_package`
---
-
-/*!50001 DROP VIEW IF EXISTS `dim_package`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `dim_package` AS select `p`.`package_id` AS `package_id`,`p`.`recipient_customer_id` AS `recipient_customer_id`,`p`.`package_flow_type_id` AS `package_flow_type_id`,`pft`.`package_flow_type_name` AS `package_flow_type_name`,`p`.`sender_customer_id` AS `sender_customer_id`,`p`.`sender_business_id` AS `sender_business_id`,`p`.`service_type_id` AS `service_type_id`,`p`.`package_status_id` AS `package_status_id`,`p`.`received_date` AS `received_date` from (`package` `p` join `package_flow_type` `pft` on((`pft`.`package_flow_type_id` = `p`.`package_flow_type_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `vw_package_overview`
---
-
-/*!50001 DROP VIEW IF EXISTS `vw_package_overview`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_package_overview` AS select `p`.`package_id` AS `package_id`,`p`.`recipient_customer_id` AS `recipient_customer_id`,trim(concat(`c`.`first_name`,' ',`c`.`last_name`)) AS `recipient_customer_name`,`c`.`email` AS `recipient_customer_email`,`pft`.`package_flow_type_name` AS `package_flow_type_name`,`p`.`sender_customer_id` AS `sender_customer_id`,trim(concat(`sc`.`first_name`,' ',`sc`.`last_name`)) AS `sender_customer_name`,`p`.`sender_business_id` AS `sender_business_id`,`b`.`business_name` AS `sender_business_name`,`ps`.`status_name` AS `package_status`,`st`.`service_type_name` AS `service_type_name`,`p`.`received_date` AS `received_date`,`p`.`contents` AS `contents`,`p`.`weight_lbs` AS `weight_lbs`,`p`.`length_in` AS `length_in`,`p`.`width_in` AS `width_in`,`p`.`height_in` AS `height_in`,`p`.`employee_id` AS `employee_id`,`e`.`full_name` AS `handled_by_employee`,`p`.`created_at` AS `created_at`,`p`.`updated_at` AS `updated_at` from (((((((`package` `p` join `customer` `c` on((`c`.`customer_id` = `p`.`recipient_customer_id`))) join `package_flow_type` `pft` on((`pft`.`package_flow_type_id` = `p`.`package_flow_type_id`))) join `package_status` `ps` on((`ps`.`package_status_id` = `p`.`package_status_id`))) left join `service_type` `st` on((`st`.`service_type_id` = `p`.`service_type_id`))) left join `customer` `sc` on((`sc`.`customer_id` = `p`.`sender_customer_id`))) left join `business` `b` on((`b`.`business_id` = `p`.`sender_business_id`))) left join `employee` `e` on((`e`.`employee_id` = `p`.`employee_id`))) */;
+/*!50001 VIEW `dim_locker_location` AS select `ll`.`locker_location_id` AS `locker_location_id`,`ll`.`location_name` AS `location_name`,`ll`.`facility_id` AS `facility_id`,`f`.`territory_id` AS `facility_territory_id`,`f`.`facility_name` AS `facility_name`,`f`.`city` AS `city`,`f`.`state_code` AS `state_code`,`f`.`zip_code` AS `zip_code` from (`lockerlocations` `ll` left join `facility` `f` on((`f`.`facility_id` = `ll`.`facility_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1362,10 +1020,10 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
--- Final view structure for view `vw_package_facility_stays`
+-- Final view structure for view `fact_refund`
 --
 
-/*!50001 DROP VIEW IF EXISTS `vw_package_facility_stays`*/;
+/*!50001 DROP VIEW IF EXISTS `fact_refund`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
@@ -1374,16 +1032,16 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_package_facility_stays` AS select `x`.`package_id` AS `package_id`,`x`.`entry_package_movement_id` AS `entry_package_movement_id`,`x`.`facility_id` AS `facility_id`,`x`.`facility_name` AS `facility_name`,`x`.`facility_type_code` AS `facility_type_code`,`x`.`facility_type_name` AS `facility_type_name`,`x`.`arrived_at` AS `arrived_at`,`x`.`departed_at` AS `departed_at`,timestampdiff(MINUTE,`x`.`arrived_at`,coalesce(`x`.`departed_at`,now())) AS `dwell_minutes`,(case when (`x`.`departed_at` is null) then 1 else 0 end) AS `is_current_facility` from (select `pm`.`package_id` AS `package_id`,`pm`.`package_movement_id` AS `entry_package_movement_id`,`pm`.`facility_id` AS `facility_id`,`f`.`facility_name` AS `facility_name`,`ft`.`facility_type_code` AS `facility_type_code`,`ft`.`facility_type_name` AS `facility_type_name`,`pm`.`event_timestamp` AS `arrived_at`,(select min(`pm2`.`event_timestamp`) from (`package_movement` `pm2` join `package_movement_event_type` `met2` on((`pm2`.`package_movement_event_type_id` = `met2`.`package_movement_event_type_id`))) where ((`pm2`.`package_id` = `pm`.`package_id`) and (`met2`.`is_exit_event` = 1) and (`pm2`.`event_timestamp` > `pm`.`event_timestamp`) and ((`pm2`.`facility_id` = `pm`.`facility_id`) or (`pm2`.`from_facility_id` = `pm`.`facility_id`)))) AS `departed_at` from (((`package_movement` `pm` join `package_movement_event_type` `met` on((`pm`.`package_movement_event_type_id` = `met`.`package_movement_event_type_id`))) join `facility` `f` on((`pm`.`facility_id` = `f`.`facility_id`))) join `facility_type` `ft` on((`f`.`facility_type_id` = `ft`.`facility_type_id`))) where (`met`.`is_entry_event` = 1)) `x` */;
+/*!50001 VIEW `fact_refund` AS select `r`.`refund_id` AS `refund_id`,`r`.`package_id` AS `package_id`,`r`.`customer_id` AS `customer_id`,`c`.`territory_id` AS `customer_territory_id`,`i`.`incident_id` AS `incident_id`,`i`.`facility_id` AS `refund_facility_id`,`f`.`territory_id` AS `refund_facility_territory_id`,`i`.`reported_by_employee_id` AS `reported_by_employee_id`,`ef`.`territory_id` AS `employee_territory_id`,`i`.`incident_type_id` AS `incident_type_id`,`i`.`incident_severity_id` AS `incident_severity_id`,`i`.`incident_status_id` AS `incident_status_id`,`p`.`service_type_id` AS `service_type_id`,`r`.`refund_date` AS `refund_datetime`,`r`.`refund_amount` AS `refund_amount`,`r`.`refund_status` AS `refund_status`,1 AS `refund_count` from (((((((`refunds` `r` join `package` `p` on((`p`.`package_id` = `r`.`package_id`))) left join `customer` `c` on((`c`.`customer_id` = `r`.`customer_id`))) left join `incident` `i` on((`i`.`incident_id` = (select `i2`.`incident_id` from `incident` `i2` where ((`i2`.`package_id` = `r`.`package_id`) and ((`i2`.`customer_id` = `r`.`customer_id`) or (`i2`.`customer_id` is null)) and (`i2`.`facility_id` is not null) and (`i2`.`incident_date` <= `r`.`refund_date`)) order by `i2`.`incident_date` desc,`i2`.`incident_id` desc limit 1)))) left join `facility` `f` on((`f`.`facility_id` = `i`.`facility_id`))) left join `employee` `e` on((`e`.`employee_id` = `i`.`reported_by_employee_id`))) left join `departments` `d` on((`d`.`department_id` = `e`.`department_id`))) left join `facility` `ef` on((`ef`.`facility_id` = `d`.`facility_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
--- Final view structure for view `dim_package_flow_type`
+-- Final view structure for view `dim_department`
 --
 
-/*!50001 DROP VIEW IF EXISTS `dim_package_flow_type`*/;
+/*!50001 DROP VIEW IF EXISTS `dim_department`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
@@ -1392,7 +1050,115 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `dim_package_flow_type` AS select `package_flow_type`.`package_flow_type_id` AS `package_flow_type_id`,`package_flow_type`.`package_flow_type_name` AS `package_flow_type_name`,`package_flow_type`.`is_active` AS `is_active` from `package_flow_type` */;
+/*!50001 VIEW `dim_department` AS select `d`.`department_id` AS `department_id`,`d`.`department_name` AS `department_name`,`d`.`facility_id` AS `facility_id`,`f`.`territory_id` AS `facility_territory_id`,`f`.`facility_name` AS `facility_name`,`d`.`manager_employee_id` AS `manager_employee_id`,`d`.`manager_start_date` AS `manager_start_date`,cast(`d`.`created_at` as date) AS `department_created_date` from (`departments` `d` left join `facility` `f` on((`f`.`facility_id` = `d`.`facility_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `dim_movement_event_type`
+--
+
+/*!50001 DROP VIEW IF EXISTS `dim_movement_event_type`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `dim_movement_event_type` AS select `met`.`package_movement_event_type_id` AS `package_movement_event_type_id`,`met`.`event_type_name` AS `event_type_name`,`met`.`description` AS `description`,`met`.`default_package_status_name` AS `default_package_status_name`,`met`.`is_entry_event` AS `is_entry_event`,`met`.`is_exit_event` AS `is_exit_event`,`met`.`is_processing_event` AS `is_processing_event`,`met`.`is_delay_event` AS `is_delay_event`,`met`.`is_final_event` AS `is_final_event`,`met`.`sort_order` AS `sort_order`,`met`.`is_active` AS `is_active` from `package_movement_event_type` `met` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_package_id_hex_lookup`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_package_id_hex_lookup`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_package_id_hex_lookup` AS select hex(`p`.`package_id`) AS `package_id_hex`,`p`.`package_id` AS `package_id`,hex(`p`.`recipient_customer_id`) AS `recipient_customer_id_hex`,`p`.`recipient_customer_id` AS `recipient_customer_id`,`p`.`package_flow_type_id` AS `package_flow_type_id`,`pft`.`package_flow_type_name` AS `package_flow_type_name`,hex(`p`.`sender_customer_id`) AS `sender_customer_id_hex`,`p`.`sender_customer_id` AS `sender_customer_id`,hex(`p`.`sender_business_id`) AS `sender_business_id_hex`,`p`.`sender_business_id` AS `sender_business_id`,`p`.`package_status_id` AS `package_status_id`,`p`.`service_type_id` AS `service_type_id`,`p`.`received_date` AS `received_date` from (`package` `p` join `package_flow_type` `pft` on((`pft`.`package_flow_type_id` = `p`.`package_flow_type_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_incident_movement_summary`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_incident_movement_summary`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_incident_movement_summary` AS select `i`.`incident_id` AS `incident_id`,`i`.`incident_date` AS `incident_date`,`i`.`description` AS `description`,`it`.`type_name` AS `incident_type`,`it`.`type_category` AS `type_category`,`sev`.`severity_name` AS `severity_name`,`ist`.`status_name` AS `incident_status`,`i`.`reported_by_employee_id` AS `reported_by_employee_id`,`e`.`full_name` AS `reported_by_employee`,`i`.`package_id` AS `package_id`,`i`.`package_movement_id` AS `package_movement_id`,`met`.`event_type_name` AS `movement_event_type`,`i`.`customer_id` AS `customer_id`,concat(`c`.`first_name`,' ',`c`.`last_name`) AS `customer_name`,`i`.`facility_id` AS `facility_id`,`f`.`facility_name` AS `facility_name`,`ft`.`facility_type_code` AS `facility_type_code`,`ft`.`facility_type_name` AS `facility_type_name` from (((((((((`incident` `i` join `incident_type` `it` on((`i`.`incident_type_id` = `it`.`incident_type_id`))) join `incident_severity` `sev` on((`i`.`incident_severity_id` = `sev`.`incident_severity_id`))) join `incident_status` `ist` on((`i`.`incident_status_id` = `ist`.`incident_status_id`))) join `employee` `e` on((`i`.`reported_by_employee_id` = `e`.`employee_id`))) left join `package_movement` `pm` on((`i`.`package_movement_id` = `pm`.`package_movement_id`))) left join `package_movement_event_type` `met` on((`pm`.`package_movement_event_type_id` = `met`.`package_movement_event_type_id`))) left join `customer` `c` on((`i`.`customer_id` = `c`.`customer_id`))) left join `facility` `f` on((`i`.`facility_id` = `f`.`facility_id`))) left join `facility_type` `ft` on((`f`.`facility_type_id` = `ft`.`facility_type_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_package_overview`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_package_overview`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_package_overview` AS select `p`.`package_id` AS `package_id`,`p`.`recipient_customer_id` AS `recipient_customer_id`,trim(concat(`c`.`first_name`,' ',`c`.`last_name`)) AS `recipient_customer_name`,`c`.`email` AS `recipient_customer_email`,`pft`.`package_flow_type_name` AS `package_flow_type_name`,`p`.`sender_customer_id` AS `sender_customer_id`,trim(concat(`sc`.`first_name`,' ',`sc`.`last_name`)) AS `sender_customer_name`,`p`.`sender_business_id` AS `sender_business_id`,`b`.`business_name` AS `sender_business_name`,`ps`.`status_name` AS `package_status`,`st`.`service_type_name` AS `service_type_name`,`p`.`received_date` AS `received_date`,`p`.`contents` AS `contents`,`p`.`weight_lbs` AS `weight_lbs`,`p`.`length_in` AS `length_in`,`p`.`width_in` AS `width_in`,`p`.`height_in` AS `height_in`,`p`.`employee_id` AS `employee_id`,`e`.`full_name` AS `handled_by_employee`,`p`.`created_at` AS `created_at`,`p`.`updated_at` AS `updated_at` from (((((((`package` `p` join `customer` `c` on((`c`.`customer_id` = `p`.`recipient_customer_id`))) join `package_flow_type` `pft` on((`pft`.`package_flow_type_id` = `p`.`package_flow_type_id`))) join `package_status` `ps` on((`ps`.`package_status_id` = `p`.`package_status_id`))) left join `service_type` `st` on((`st`.`service_type_id` = `p`.`service_type_id`))) left join `customer` `sc` on((`sc`.`customer_id` = `p`.`sender_customer_id`))) left join `business` `b` on((`b`.`business_id` = `p`.`sender_business_id`))) left join `employee` `e` on((`e`.`employee_id` = `p`.`employee_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_employee_facility_assignment`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_employee_facility_assignment`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_employee_facility_assignment` AS select `e`.`employee_id` AS `employee_id`,`e`.`full_name` AS `full_name`,`e`.`email` AS `email`,`e`.`phone_number` AS `phone_number`,`e`.`job_title` AS `job_title`,`e`.`department_id` AS `department_id`,`d`.`department_name` AS `department_name`,`d`.`facility_id` AS `facility_id`,`f`.`facility_name` AS `facility_name`,`ft`.`facility_type_code` AS `facility_type_code`,`ft`.`facility_type_name` AS `facility_type_name`,`e`.`manager_employee_id` AS `manager_employee_id`,`m`.`full_name` AS `manager_name`,`e`.`salary` AS `salary`,`e`.`hours_worked` AS `hours_worked`,`e`.`user_id` AS `user_id`,`e`.`created_at` AS `created_at`,`e`.`updated_at` AS `updated_at` from ((((`employee` `e` join `departments` `d` on((`e`.`department_id` = `d`.`department_id`))) left join `facility` `f` on((`d`.`facility_id` = `f`.`facility_id`))) left join `facility_type` `ft` on((`f`.`facility_type_id` = `ft`.`facility_type_id`))) left join `employee` `m` on((`e`.`manager_employee_id` = `m`.`employee_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_package_delay_summary`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_package_delay_summary`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_package_delay_summary` AS select `pm`.`package_movement_id` AS `package_movement_id`,`pm`.`package_id` AS `package_id`,`pm`.`event_timestamp` AS `event_timestamp`,coalesce(`pm`.`facility_id`,`pm`.`from_facility_id`,`pm`.`to_facility_id`) AS `delay_facility_id`,coalesce(`f`.`facility_name`,`from_f`.`facility_name`,`to_f`.`facility_name`) AS `delay_facility_name`,`met`.`event_type_name` AS `event_type_name`,`pm`.`expected_event_at` AS `expected_event_at`,`pm`.`delay_minutes` AS `delay_minutes`,`pm`.`delay_reason` AS `delay_reason`,`pm`.`movement_note` AS `movement_note` from ((((`package_movement` `pm` join `package_movement_event_type` `met` on((`pm`.`package_movement_event_type_id` = `met`.`package_movement_event_type_id`))) left join `facility` `f` on((`pm`.`facility_id` = `f`.`facility_id`))) left join `facility` `from_f` on((`pm`.`from_facility_id` = `from_f`.`facility_id`))) left join `facility` `to_f` on((`pm`.`to_facility_id` = `to_f`.`facility_id`))) where ((`met`.`is_delay_event` = 1) or (`pm`.`delay_minutes` > 0)) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1416,10 +1182,10 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
--- Final view structure for view `vw_facility_processing_counts`
+-- Final view structure for view `vw_incident_summary`
 --
 
-/*!50001 DROP VIEW IF EXISTS `vw_facility_processing_counts`*/;
+/*!50001 DROP VIEW IF EXISTS `vw_incident_summary`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
@@ -1428,61 +1194,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_facility_processing_counts` AS select `pm`.`facility_id` AS `facility_id`,`f`.`facility_name` AS `facility_name`,`ft`.`facility_type_code` AS `facility_type_code`,`ft`.`facility_type_name` AS `facility_type_name`,count(0) AS `movement_event_count`,sum((case when (`met`.`is_processing_event` = 1) then 1 else 0 end)) AS `processing_event_count`,count(distinct `pm`.`package_id`) AS `packages_processed`,max(`pm`.`event_timestamp`) AS `most_recent_processed_at` from (((`package_movement` `pm` join `package_movement_event_type` `met` on((`pm`.`package_movement_event_type_id` = `met`.`package_movement_event_type_id`))) join `facility` `f` on((`pm`.`facility_id` = `f`.`facility_id`))) join `facility_type` `ft` on((`f`.`facility_type_id` = `ft`.`facility_type_id`))) group by `pm`.`facility_id`,`f`.`facility_name`,`ft`.`facility_type_code`,`ft`.`facility_type_name` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `vw_package_route_plan_actual_movement`
---
-
-/*!50001 DROP VIEW IF EXISTS `vw_package_route_plan_actual_movement`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_package_route_plan_actual_movement` AS with `latest_movement` as (select `pm`.`package_movement_id` AS `package_movement_id`,`pm`.`package_id` AS `package_id`,`pm`.`facility_id` AS `facility_id`,`pm`.`from_facility_id` AS `from_facility_id`,`pm`.`to_facility_id` AS `to_facility_id`,`pm`.`event_timestamp` AS `event_timestamp`,`met`.`event_type_name` AS `event_type_name`,`ps`.`status_name` AS `status_name`,row_number() OVER (PARTITION BY `pm`.`package_id` ORDER BY `pm`.`event_timestamp` desc,`pm`.`package_movement_id` desc )  AS `movement_rank` from ((`package_movement` `pm` join `package_movement_event_type` `met` on((`met`.`package_movement_event_type_id` = `pm`.`package_movement_event_type_id`))) join `package_status` `ps` on((`ps`.`package_status_id` = `pm`.`package_status_id`)))) select `prp`.`package_id` AS `package_id`,`st`.`service_type_name` AS `service_type_name`,`prp`.`destination_purpose` AS `destination_purpose`,`prp`.`planned_origin_facility_id` AS `planned_origin_facility_id`,`origin_f`.`facility_name` AS `planned_origin_facility_name`,`prp`.`planned_destination_facility_id` AS `planned_destination_facility_id`,`dest_f`.`facility_name` AS `planned_destination_facility_name`,`lm`.`package_movement_id` AS `latest_package_movement_id`,`lm`.`event_type_name` AS `latest_event_type_name`,`lm`.`status_name` AS `latest_status_name`,`lm`.`facility_id` AS `latest_facility_id`,`latest_f`.`facility_name` AS `latest_facility_name`,`lm`.`from_facility_id` AS `latest_from_facility_id`,`lm`.`to_facility_id` AS `latest_to_facility_id`,`lm`.`event_timestamp` AS `latest_event_timestamp`,(case when (`lm`.`package_id` is null) then 'No Movement' when (`lm`.`facility_id` = `prp`.`planned_destination_facility_id`) then 'At Planned Destination' when (`lm`.`to_facility_id` = `prp`.`planned_destination_facility_id`) then 'En Route To Planned Destination' when (`lm`.`facility_id` = `prp`.`planned_origin_facility_id`) then 'At Planned Origin' else 'Off Planned Route' end) AS `route_alignment_status` from ((((((`package_route_plan` `prp` join `package` `p` on((`p`.`package_id` = `prp`.`package_id`))) left join `service_type` `st` on((`st`.`service_type_id` = `p`.`service_type_id`))) left join `facility` `origin_f` on((`origin_f`.`facility_id` = `prp`.`planned_origin_facility_id`))) left join `facility` `dest_f` on((`dest_f`.`facility_id` = `prp`.`planned_destination_facility_id`))) left join `latest_movement` `lm` on(((`lm`.`package_id` = `prp`.`package_id`) and (`lm`.`movement_rank` = 1)))) left join `facility` `latest_f` on((`latest_f`.`facility_id` = `lm`.`facility_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `vw_facility_delay_totals`
---
-
-/*!50001 DROP VIEW IF EXISTS `vw_facility_delay_totals`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_facility_delay_totals` AS select `d`.`delay_facility_id` AS `facility_id`,`d`.`delay_facility_name` AS `facility_name`,count(0) AS `delay_event_count`,count(distinct `d`.`package_id`) AS `delayed_package_count`,sum(`d`.`delay_minutes`) AS `total_delay_minutes`,avg(`d`.`delay_minutes`) AS `avg_delay_minutes`,max(`d`.`delay_minutes`) AS `max_delay_minutes` from `vw_package_delay_summary` `d` where (`d`.`delay_facility_id` is not null) group by `d`.`delay_facility_id`,`d`.`delay_facility_name` */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `vw_user_account_roles`
---
-
-/*!50001 DROP VIEW IF EXISTS `vw_user_account_roles`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY INVOKER */
-/*!50001 VIEW `vw_user_account_roles` AS select `ul`.`user_id` AS `user_id`,`ul`.`username` AS `username`,`ul`.`email` AS `email`,`ul`.`is_active` AS `is_active`,`ul`.`first_name` AS `first_name`,`ul`.`last_name` AS `last_name`,`r`.`role_id` AS `role_id`,`r`.`role_name` AS `role_name` from ((`user_logins` `ul` join `user_roles` `ur` on((`ul`.`user_id` = `ur`.`user_id`))) join `roles` `r` on((`ur`.`role_id` = `r`.`role_id`))) */;
+/*!50001 VIEW `vw_incident_summary` AS select `i`.`incident_id` AS `incident_id`,`i`.`incident_date` AS `incident_date`,`i`.`description` AS `description`,`it`.`type_name` AS `incident_type`,`it`.`type_category` AS `type_category`,`sev`.`severity_name` AS `severity_name`,`sev`.`sort_order` AS `severity_order`,`ist`.`status_name` AS `incident_status`,`ist`.`is_closed_status` AS `is_closed_status`,`i`.`reported_by_employee_id` AS `reported_by_employee_id`,`e`.`full_name` AS `reported_by_employee`,`i`.`package_id` AS `package_id`,`i`.`customer_id` AS `customer_id`,concat(`c`.`first_name`,' ',`c`.`last_name`) AS `customer_name`,`i`.`facility_id` AS `facility_id`,`f`.`facility_name` AS `facility_name` from ((((((`incident` `i` join `incident_type` `it` on((`i`.`incident_type_id` = `it`.`incident_type_id`))) join `incident_severity` `sev` on((`i`.`incident_severity_id` = `sev`.`incident_severity_id`))) join `incident_status` `ist` on((`i`.`incident_status_id` = `ist`.`incident_status_id`))) join `employee` `e` on((`i`.`reported_by_employee_id` = `e`.`employee_id`))) left join `customer` `c` on((`i`.`customer_id` = `c`.`customer_id`))) left join `facility` `f` on((`i`.`facility_id` = `f`.`facility_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1501,6 +1213,114 @@ SET character_set_client = @saved_cs_client;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
 /*!50001 VIEW `dim_incident_type` AS select `it`.`incident_type_id` AS `incident_type_id`,`it`.`type_name` AS `type_name`,`it`.`type_category` AS `type_category`,`it`.`is_active` AS `is_active` from `incident_type` `it` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_facility_lane_counts`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_facility_lane_counts`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_facility_lane_counts` AS select `pm`.`from_facility_id` AS `from_facility_id`,`from_f`.`facility_name` AS `from_facility_name`,`pm`.`to_facility_id` AS `to_facility_id`,`to_f`.`facility_name` AS `to_facility_name`,count(0) AS `movement_event_count`,count(distinct `pm`.`package_id`) AS `package_count`,min(`pm`.`event_timestamp`) AS `first_moved_at`,max(`pm`.`event_timestamp`) AS `last_moved_at` from ((`package_movement` `pm` join `facility` `from_f` on((`pm`.`from_facility_id` = `from_f`.`facility_id`))) join `facility` `to_f` on((`pm`.`to_facility_id` = `to_f`.`facility_id`))) group by `pm`.`from_facility_id`,`from_f`.`facility_name`,`pm`.`to_facility_id`,`to_f`.`facility_name` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `dim_package_status`
+--
+
+/*!50001 DROP VIEW IF EXISTS `dim_package_status`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `dim_package_status` AS select `ps`.`package_status_id` AS `package_status_id`,`ps`.`status_name` AS `status_name`,`ps`.`status_category` AS `status_category`,`ps`.`sort_order` AS `sort_order`,`ps`.`is_final_status` AS `is_final_status`,`ps`.`is_active` AS `is_active` from `package_status` `ps` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `dim_customer`
+--
+
+/*!50001 DROP VIEW IF EXISTS `dim_customer`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `dim_customer` AS select `c`.`customer_id` AS `customer_id`,`c`.`territory_id` AS `territory_id`,`c`.`first_name` AS `first_name`,`c`.`middle_initial` AS `middle_initial`,`c`.`last_name` AS `last_name`,trim(concat(`c`.`first_name`,' ',coalesce(concat(`c`.`middle_initial`,'. '),''),`c`.`last_name`)) AS `customer_name`,`c`.`city` AS `city`,`c`.`state_code` AS `state_code`,`c`.`zip_code` AS `zip_code`,`c`.`preferred_facility_id` AS `preferred_facility_id`,`pf`.`territory_id` AS `preferred_facility_territory_id`,`c`.`birth_date` AS `birth_date`,timestampdiff(YEAR,`c`.`birth_date`,curdate()) AS `age_years`,`c`.`marital_status` AS `marital_status`,`c`.`gender` AS `gender`,`c`.`email_address` AS `email_address`,`c`.`annual_income` AS `annual_income`,`c`.`total_children` AS `total_children`,`c`.`education_level` AS `education_level`,`c`.`occupation` AS `occupation`,`c`.`home_owner` AS `home_owner`,cast(`c`.`created_at` as date) AS `customer_created_date` from (`customer` `c` left join `facility` `pf` on((`pf`.`facility_id` = `c`.`preferred_facility_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_package_facility_stays`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_package_facility_stays`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_package_facility_stays` AS select `x`.`package_id` AS `package_id`,`x`.`entry_package_movement_id` AS `entry_package_movement_id`,`x`.`facility_id` AS `facility_id`,`x`.`facility_name` AS `facility_name`,`x`.`facility_type_code` AS `facility_type_code`,`x`.`facility_type_name` AS `facility_type_name`,`x`.`arrived_at` AS `arrived_at`,`x`.`departed_at` AS `departed_at`,timestampdiff(MINUTE,`x`.`arrived_at`,coalesce(`x`.`departed_at`,now())) AS `dwell_minutes`,(case when (`x`.`departed_at` is null) then 1 else 0 end) AS `is_current_facility` from (select `pm`.`package_id` AS `package_id`,`pm`.`package_movement_id` AS `entry_package_movement_id`,`pm`.`facility_id` AS `facility_id`,`f`.`facility_name` AS `facility_name`,`ft`.`facility_type_code` AS `facility_type_code`,`ft`.`facility_type_name` AS `facility_type_name`,`pm`.`event_timestamp` AS `arrived_at`,(select min(`pm2`.`event_timestamp`) from (`package_movement` `pm2` join `package_movement_event_type` `met2` on((`pm2`.`package_movement_event_type_id` = `met2`.`package_movement_event_type_id`))) where ((`pm2`.`package_id` = `pm`.`package_id`) and (`met2`.`is_exit_event` = 1) and (`pm2`.`event_timestamp` > `pm`.`event_timestamp`) and ((`pm2`.`facility_id` = `pm`.`facility_id`) or (`pm2`.`from_facility_id` = `pm`.`facility_id`)))) AS `departed_at` from (((`package_movement` `pm` join `package_movement_event_type` `met` on((`pm`.`package_movement_event_type_id` = `met`.`package_movement_event_type_id`))) join `facility` `f` on((`pm`.`facility_id` = `f`.`facility_id`))) join `facility_type` `ft` on((`f`.`facility_type_id` = `ft`.`facility_type_id`))) where (`met`.`is_entry_event` = 1)) `x` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `dim_smartlocker`
+--
+
+/*!50001 DROP VIEW IF EXISTS `dim_smartlocker`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `dim_smartlocker` AS select `sl`.`locker_id` AS `locker_id`,`sl`.`locker_location_id` AS `locker_location_id`,`ll`.`location_name` AS `location_name`,`ll`.`facility_id` AS `facility_id`,`f`.`territory_id` AS `facility_territory_id`,`f`.`facility_name` AS `facility_name`,`sl`.`locker_status` AS `locker_status`,cast(`sl`.`created_at` as date) AS `locker_created_date` from ((`smartlocker` `sl` left join `lockerlocations` `ll` on((`ll`.`locker_location_id` = `sl`.`locker_location_id`))) left join `facility` `f` on((`f`.`facility_id` = `ll`.`facility_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `fact_smartlocker_assignment`
+--
+
+/*!50001 DROP VIEW IF EXISTS `fact_smartlocker_assignment`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `fact_smartlocker_assignment` AS select `la`.`locker_assignment_id` AS `locker_assignment_id`,`ptl`.`package_id` AS `package_id`,`la`.`locker_id` AS `locker_id`,`sl`.`locker_location_id` AS `locker_location_id`,`ll`.`facility_id` AS `facility_id`,`f`.`territory_id` AS `facility_territory_id`,`p`.`recipient_customer_id` AS `package_customer_id`,`p`.`recipient_customer_id` AS `recipient_customer_id`,`p`.`package_flow_type_id` AS `package_flow_type_id`,`pft`.`package_flow_type_name` AS `package_flow_type_name`,`p`.`sender_customer_id` AS `sender_customer_id`,`p`.`sender_business_id` AS `sender_business_id`,`ptl`.`customer_id` AS `locker_customer_id`,`la`.`assigned_at` AS `assigned_datetime`,`la`.`expires_at` AS `expiration_datetime`,`la`.`retrieved_at` AS `retrieved_datetime`,1 AS `locker_assignment_count` from ((((((`lockerassignment` `la` join `package_to_locker` `ptl` on((`ptl`.`locker_assignment_id` = `la`.`locker_assignment_id`))) join `package` `p` on((`p`.`package_id` = `ptl`.`package_id`))) join `package_flow_type` `pft` on((`pft`.`package_flow_type_id` = `p`.`package_flow_type_id`))) join `smartlocker` `sl` on((`sl`.`locker_id` = `la`.`locker_id`))) left join `lockerlocations` `ll` on((`ll`.`locker_location_id` = `sl`.`locker_location_id`))) left join `facility` `f` on((`f`.`facility_id` = `ll`.`facility_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1542,10 +1362,10 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
--- Final view structure for view `fact_shipping_revenue`
+-- Final view structure for view `dim_territory`
 --
 
-/*!50001 DROP VIEW IF EXISTS `fact_shipping_revenue`*/;
+/*!50001 DROP VIEW IF EXISTS `dim_territory`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
@@ -1553,44 +1373,8 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `fact_shipping_revenue` AS select `sc`.`package_id` AS `package_id`,`p`.`recipient_customer_id` AS `customer_id`,`p`.`recipient_customer_id` AS `recipient_customer_id`,`p`.`package_flow_type_id` AS `package_flow_type_id`,`pft`.`package_flow_type_name` AS `package_flow_type_name`,`p`.`sender_customer_id` AS `sender_customer_id`,`p`.`sender_business_id` AS `sender_business_id`,`c`.`territory_id` AS `customer_territory_id`,`p`.`employee_id` AS `received_by_employee_id`,`p`.`service_type_id` AS `service_type_id`,`p`.`package_status_id` AS `package_status_id`,`p`.`received_date` AS `revenue_datetime`,`sc`.`actual_shipping_charge` AS `gross_shipping_revenue`,`sc`.`material_cost` AS `material_cost`,`sc`.`transportation_cost` AS `transportation_cost`,round((coalesce(`sc`.`material_cost`,0) + coalesce(`sc`.`transportation_cost`,0)),2) AS `total_internal_shipping_cost`,round(((`sc`.`actual_shipping_charge` - coalesce(`sc`.`material_cost`,0)) - coalesce(`sc`.`transportation_cost`,0)),2) AS `estimated_shipping_margin`,`sc`.`charge_source` AS `charge_source`,`sc`.`charge_recorded_at` AS `charge_recorded_at`,1 AS `shipping_charge_count` from (((`shipping_cost` `sc` join `package` `p` on((`p`.`package_id` = `sc`.`package_id`))) join `package_flow_type` `pft` on((`pft`.`package_flow_type_id` = `p`.`package_flow_type_id`))) left join `customer` `c` on((`c`.`customer_id` = `p`.`recipient_customer_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `fact_refund`
---
-
-/*!50001 DROP VIEW IF EXISTS `fact_refund`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `fact_refund` AS select `r`.`refund_id` AS `refund_id`,`r`.`package_id` AS `package_id`,`r`.`customer_id` AS `customer_id`,`c`.`territory_id` AS `customer_territory_id`,`i`.`incident_id` AS `incident_id`,`i`.`facility_id` AS `refund_facility_id`,`f`.`territory_id` AS `refund_facility_territory_id`,`i`.`reported_by_employee_id` AS `reported_by_employee_id`,`ef`.`territory_id` AS `employee_territory_id`,`i`.`incident_type_id` AS `incident_type_id`,`i`.`incident_severity_id` AS `incident_severity_id`,`i`.`incident_status_id` AS `incident_status_id`,`p`.`service_type_id` AS `service_type_id`,`r`.`refund_date` AS `refund_datetime`,`r`.`refund_amount` AS `refund_amount`,`r`.`refund_status` AS `refund_status`,1 AS `refund_count` from (((((((`refunds` `r` join `package` `p` on((`p`.`package_id` = `r`.`package_id`))) left join `customer` `c` on((`c`.`customer_id` = `r`.`customer_id`))) left join `incident` `i` on((`i`.`incident_id` = (select `i2`.`incident_id` from `incident` `i2` where ((`i2`.`package_id` = `r`.`package_id`) and ((`i2`.`customer_id` = `r`.`customer_id`) or (`i2`.`customer_id` is null)) and (`i2`.`facility_id` is not null) and (`i2`.`incident_date` <= `r`.`refund_date`)) order by `i2`.`incident_date` desc,`i2`.`incident_id` desc limit 1)))) left join `facility` `f` on((`f`.`facility_id` = `i`.`facility_id`))) left join `employee` `e` on((`e`.`employee_id` = `i`.`reported_by_employee_id`))) left join `departments` `d` on((`d`.`department_id` = `e`.`department_id`))) left join `facility` `ef` on((`ef`.`facility_id` = `d`.`facility_id`))) */;
-/*!50001 SET character_set_client      = @saved_cs_client */;
-/*!50001 SET character_set_results     = @saved_cs_results */;
-/*!50001 SET collation_connection      = @saved_col_connection */;
-
---
--- Final view structure for view `dim_locker_location`
---
-
-/*!50001 DROP VIEW IF EXISTS `dim_locker_location`*/;
-/*!50001 SET @saved_cs_client          = @@character_set_client */;
-/*!50001 SET @saved_cs_results         = @@character_set_results */;
-/*!50001 SET @saved_col_connection     = @@collation_connection */;
-/*!50001 SET character_set_client      = utf8mb4 */;
-/*!50001 SET character_set_results     = utf8mb4 */;
-/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
-/*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `dim_locker_location` AS select `ll`.`locker_location_id` AS `locker_location_id`,`ll`.`location_name` AS `location_name`,`ll`.`facility_id` AS `facility_id`,`f`.`territory_id` AS `facility_territory_id`,`f`.`facility_name` AS `facility_name`,`f`.`city` AS `city`,`f`.`state_code` AS `state_code`,`f`.`zip_code` AS `zip_code` from (`lockerlocations` `ll` left join `facility` `f` on((`f`.`facility_id` = `ll`.`facility_id`))) */;
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY INVOKER */
+/*!50001 VIEW `dim_territory` AS select `t`.`territory_id` AS `territory_id`,`t`.`state` AS `state`,`t`.`city` AS `city`,`t`.`county` AS `county`,`t`.`zip_code` AS `zip_code`,`z`.`latitude` AS `latitude`,`z`.`longitude` AS `longitude`,`t`.`created_at` AS `created_at`,`t`.`updated_at` AS `updated_at` from (`territory` `t` left join `zip_geo` `z` on((`z`.`zip_code` = `t`.`zip_code`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1614,6 +1398,222 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `dim_incident_severity`
+--
+
+/*!50001 DROP VIEW IF EXISTS `dim_incident_severity`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `dim_incident_severity` AS select `ise`.`incident_severity_id` AS `incident_severity_id`,`ise`.`severity_name` AS `severity_name`,`ise`.`sort_order` AS `sort_order`,`ise`.`is_active` AS `is_active` from `incident_severity` `ise` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_package_route_history`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_package_route_history`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_package_route_history` AS select `pm`.`package_movement_id` AS `package_movement_id`,`pm`.`package_id` AS `package_id`,`pm`.`event_timestamp` AS `event_timestamp`,`met`.`event_type_name` AS `event_type_name`,`ps`.`status_name` AS `package_status`,`pm`.`facility_id` AS `facility_id`,`f`.`facility_name` AS `facility_name`,`ft`.`facility_type_code` AS `facility_type_code`,`ft`.`facility_type_name` AS `facility_type_name`,`pm`.`from_facility_id` AS `from_facility_id`,`from_f`.`facility_name` AS `from_facility_name`,`pm`.`to_facility_id` AS `to_facility_id`,`to_f`.`facility_name` AS `to_facility_name`,`pm`.`processed_by_employee_id` AS `processed_by_employee_id`,`e`.`full_name` AS `processed_by_employee`,`pm`.`expected_event_at` AS `expected_event_at`,`pm`.`delay_minutes` AS `delay_minutes`,`pm`.`delay_reason` AS `delay_reason`,`pm`.`movement_note` AS `movement_note` from (((((((`package_movement` `pm` join `package_movement_event_type` `met` on((`pm`.`package_movement_event_type_id` = `met`.`package_movement_event_type_id`))) join `package_status` `ps` on((`pm`.`package_status_id` = `ps`.`package_status_id`))) left join `facility` `f` on((`pm`.`facility_id` = `f`.`facility_id`))) left join `facility_type` `ft` on((`f`.`facility_type_id` = `ft`.`facility_type_id`))) left join `facility` `from_f` on((`pm`.`from_facility_id` = `from_f`.`facility_id`))) left join `facility` `to_f` on((`pm`.`to_facility_id` = `to_f`.`facility_id`))) left join `employee` `e` on((`pm`.`processed_by_employee_id` = `e`.`employee_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `dim_package`
+--
+
+/*!50001 DROP VIEW IF EXISTS `dim_package`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `dim_package` AS select `p`.`package_id` AS `package_id`,`p`.`recipient_customer_id` AS `recipient_customer_id`,`p`.`package_flow_type_id` AS `package_flow_type_id`,`pft`.`package_flow_type_name` AS `package_flow_type_name`,`p`.`sender_customer_id` AS `sender_customer_id`,`p`.`sender_business_id` AS `sender_business_id`,`p`.`service_type_id` AS `service_type_id`,`p`.`package_status_id` AS `package_status_id`,`p`.`received_date` AS `received_date` from (`package` `p` join `package_flow_type` `pft` on((`pft`.`package_flow_type_id` = `p`.`package_flow_type_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `fact_package`
+--
+
+/*!50001 DROP VIEW IF EXISTS `fact_package`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `fact_package` AS select `p`.`package_id` AS `package_id`,`p`.`recipient_customer_id` AS `customer_id`,`p`.`recipient_customer_id` AS `recipient_customer_id`,`p`.`package_flow_type_id` AS `package_flow_type_id`,`pft`.`package_flow_type_name` AS `package_flow_type_name`,`p`.`sender_customer_id` AS `sender_customer_id`,`p`.`sender_business_id` AS `sender_business_id`,`p`.`service_type_id` AS `service_type_id`,`p`.`package_status_id` AS `package_status_id`,`d`.`facility_id` AS `received_facility_id`,`f`.`territory_id` AS `received_facility_territory_id`,`p`.`employee_id` AS `received_by_employee_id`,`p`.`received_date` AS `received_datetime`,`p`.`weight_lbs` AS `weight_lbs`,`p`.`length_in` AS `length_in`,`p`.`width_in` AS `width_in`,`p`.`height_in` AS `height_in`,(case when ((`p`.`length_in` is not null) and (`p`.`width_in` is not null) and (`p`.`height_in` is not null)) then ((`p`.`length_in` * `p`.`width_in`) * `p`.`height_in`) else NULL end) AS `package_volume_cubic_in`,1 AS `package_count` from ((((`package` `p` join `package_flow_type` `pft` on((`pft`.`package_flow_type_id` = `p`.`package_flow_type_id`))) left join `employee` `e` on((`e`.`employee_id` = `p`.`employee_id`))) left join `departments` `d` on((`d`.`department_id` = `e`.`department_id`))) left join `facility` `f` on((`f`.`facility_id` = `d`.`facility_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_facility_processing_counts`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_facility_processing_counts`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_facility_processing_counts` AS select `pm`.`facility_id` AS `facility_id`,`f`.`facility_name` AS `facility_name`,`ft`.`facility_type_code` AS `facility_type_code`,`ft`.`facility_type_name` AS `facility_type_name`,count(0) AS `movement_event_count`,sum((case when (`met`.`is_processing_event` = 1) then 1 else 0 end)) AS `processing_event_count`,count(distinct `pm`.`package_id`) AS `packages_processed`,max(`pm`.`event_timestamp`) AS `most_recent_processed_at` from (((`package_movement` `pm` join `package_movement_event_type` `met` on((`pm`.`package_movement_event_type_id` = `met`.`package_movement_event_type_id`))) join `facility` `f` on((`pm`.`facility_id` = `f`.`facility_id`))) join `facility_type` `ft` on((`f`.`facility_type_id` = `ft`.`facility_type_id`))) group by `pm`.`facility_id`,`f`.`facility_name`,`ft`.`facility_type_code`,`ft`.`facility_type_name` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `dim_employee`
+--
+
+/*!50001 DROP VIEW IF EXISTS `dim_employee`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `dim_employee` AS select `e`.`employee_id` AS `employee_id`,`e`.`full_name` AS `employee_name`,`e`.`job_title` AS `job_title`,`e`.`department_id` AS `department_id`,`d`.`department_name` AS `department_name`,`d`.`facility_id` AS `facility_id`,`f`.`territory_id` AS `facility_territory_id`,`f`.`facility_name` AS `facility_name`,`e`.`manager_employee_id` AS `manager_employee_id`,(case when (exists(select 1 from `employee` `e2` where (`e2`.`manager_employee_id` = `e`.`employee_id`)) or exists(select 1 from `departments` `d2` where (`d2`.`manager_employee_id` = `e`.`employee_id`)) or (`f`.`manager_employee_id` = `e`.`employee_id`)) then 1 else 0 end) AS `is_manager`,`e`.`hours_worked` AS `hours_worked`,cast(`e`.`created_at` as date) AS `employee_created_date` from ((`employee` `e` left join `departments` `d` on((`d`.`department_id` = `e`.`department_id`))) left join `facility` `f` on((`f`.`facility_id` = `d`.`facility_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_facility_delay_totals`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_facility_delay_totals`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_facility_delay_totals` AS select `d`.`delay_facility_id` AS `facility_id`,`d`.`delay_facility_name` AS `facility_name`,count(0) AS `delay_event_count`,count(distinct `d`.`package_id`) AS `delayed_package_count`,sum(`d`.`delay_minutes`) AS `total_delay_minutes`,avg(`d`.`delay_minutes`) AS `avg_delay_minutes`,max(`d`.`delay_minutes`) AS `max_delay_minutes` from `vw_package_delay_summary` `d` where (`d`.`delay_facility_id` is not null) group by `d`.`delay_facility_id`,`d`.`delay_facility_name` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_package_route_plan_actual_movement`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_package_route_plan_actual_movement`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_package_route_plan_actual_movement` AS with `latest_movement` as (select `pm`.`package_movement_id` AS `package_movement_id`,`pm`.`package_id` AS `package_id`,`pm`.`facility_id` AS `facility_id`,`pm`.`from_facility_id` AS `from_facility_id`,`pm`.`to_facility_id` AS `to_facility_id`,`pm`.`event_timestamp` AS `event_timestamp`,`met`.`event_type_name` AS `event_type_name`,`ps`.`status_name` AS `status_name`,row_number() OVER (PARTITION BY `pm`.`package_id` ORDER BY `pm`.`event_timestamp` desc,`pm`.`package_movement_id` desc )  AS `movement_rank` from ((`package_movement` `pm` join `package_movement_event_type` `met` on((`met`.`package_movement_event_type_id` = `pm`.`package_movement_event_type_id`))) join `package_status` `ps` on((`ps`.`package_status_id` = `pm`.`package_status_id`)))) select `prp`.`package_id` AS `package_id`,`st`.`service_type_name` AS `service_type_name`,`prp`.`destination_purpose` AS `destination_purpose`,`prp`.`planned_origin_facility_id` AS `planned_origin_facility_id`,`origin_f`.`facility_name` AS `planned_origin_facility_name`,`prp`.`planned_destination_facility_id` AS `planned_destination_facility_id`,`dest_f`.`facility_name` AS `planned_destination_facility_name`,`lm`.`package_movement_id` AS `latest_package_movement_id`,`lm`.`event_type_name` AS `latest_event_type_name`,`lm`.`status_name` AS `latest_status_name`,`lm`.`facility_id` AS `latest_facility_id`,`latest_f`.`facility_name` AS `latest_facility_name`,`lm`.`from_facility_id` AS `latest_from_facility_id`,`lm`.`to_facility_id` AS `latest_to_facility_id`,`lm`.`event_timestamp` AS `latest_event_timestamp`,(case when (`lm`.`package_id` is null) then 'No Movement' when (`lm`.`facility_id` = `prp`.`planned_destination_facility_id`) then 'At Planned Destination' when (`lm`.`to_facility_id` = `prp`.`planned_destination_facility_id`) then 'En Route To Planned Destination' when (`lm`.`facility_id` = `prp`.`planned_origin_facility_id`) then 'At Planned Origin' else 'Off Planned Route' end) AS `route_alignment_status` from ((((((`package_route_plan` `prp` join `package` `p` on((`p`.`package_id` = `prp`.`package_id`))) left join `service_type` `st` on((`st`.`service_type_id` = `p`.`service_type_id`))) left join `facility` `origin_f` on((`origin_f`.`facility_id` = `prp`.`planned_origin_facility_id`))) left join `facility` `dest_f` on((`dest_f`.`facility_id` = `prp`.`planned_destination_facility_id`))) left join `latest_movement` `lm` on(((`lm`.`package_id` = `prp`.`package_id`) and (`lm`.`movement_rank` = 1)))) left join `facility` `latest_f` on((`latest_f`.`facility_id` = `lm`.`facility_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `fact_incident`
+--
+
+/*!50001 DROP VIEW IF EXISTS `fact_incident`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `fact_incident` AS select `i`.`incident_id` AS `incident_id`,`i`.`package_id` AS `package_id`,`i`.`customer_id` AS `customer_id`,`c`.`territory_id` AS `customer_territory_id`,`i`.`reported_by_employee_id` AS `reported_by_employee_id`,`ef`.`territory_id` AS `employee_territory_id`,`i`.`facility_id` AS `facility_id`,`inf`.`territory_id` AS `facility_territory_id`,`i`.`package_movement_id` AS `package_movement_id`,`i`.`incident_type_id` AS `incident_type_id`,`i`.`incident_severity_id` AS `incident_severity_id`,`i`.`incident_status_id` AS `incident_status_id`,`i`.`incident_date` AS `incident_datetime`,1 AS `incident_count` from (((((`incident` `i` left join `customer` `c` on((`c`.`customer_id` = `i`.`customer_id`))) left join `employee` `e` on((`e`.`employee_id` = `i`.`reported_by_employee_id`))) left join `departments` `d` on((`d`.`department_id` = `e`.`department_id`))) left join `facility` `ef` on((`ef`.`facility_id` = `d`.`facility_id`))) left join `facility` `inf` on((`inf`.`facility_id` = `i`.`facility_id`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `dim_service_type`
+--
+
+/*!50001 DROP VIEW IF EXISTS `dim_service_type`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `dim_service_type` AS select `st`.`service_type_id` AS `service_type_id`,`st`.`service_type_name` AS `service_type_name`,(case when (lower(`st`.`service_type_name`) like '%delivery%') then 'Delivery' when (lower(`st`.`service_type_name`) like '%locker%') then 'SmartLocker' when (lower(`st`.`service_type_name`) like '%pickup%') then 'Pickup' else 'Other' end) AS `service_category`,`st`.`is_active` AS `is_active` from `service_type` `st` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `dim_package_flow_type`
+--
+
+/*!50001 DROP VIEW IF EXISTS `dim_package_flow_type`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `dim_package_flow_type` AS select `package_flow_type`.`package_flow_type_id` AS `package_flow_type_id`,`package_flow_type`.`package_flow_type_name` AS `package_flow_type_name`,`package_flow_type`.`is_active` AS `is_active` from `package_flow_type` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `vw_customer_id_hex_lookup`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_customer_id_hex_lookup`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_customer_id_hex_lookup` AS select hex(`customer`.`customer_id`) AS `customer_id_hex`,`customer`.`customer_id` AS `customer_id`,`customer`.`first_name` AS `first_name`,`customer`.`last_name` AS `last_name`,`customer`.`email` AS `email`,`customer`.`city` AS `city`,`customer`.`state_code` AS `state_code`,`customer`.`zip_code` AS `zip_code` from `customer` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `vw_package_revenue`
 --
 
@@ -1632,10 +1632,10 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
--- Final view structure for view `fact_smartlocker_assignment`
+-- Final view structure for view `fact_shipping_revenue`
 --
 
-/*!50001 DROP VIEW IF EXISTS `fact_smartlocker_assignment`*/;
+/*!50001 DROP VIEW IF EXISTS `fact_shipping_revenue`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
@@ -1644,16 +1644,16 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `fact_smartlocker_assignment` AS select `la`.`locker_assignment_id` AS `locker_assignment_id`,`ptl`.`package_id` AS `package_id`,`la`.`locker_id` AS `locker_id`,`sl`.`locker_location_id` AS `locker_location_id`,`ll`.`facility_id` AS `facility_id`,`f`.`territory_id` AS `facility_territory_id`,`p`.`recipient_customer_id` AS `package_customer_id`,`p`.`recipient_customer_id` AS `recipient_customer_id`,`p`.`package_flow_type_id` AS `package_flow_type_id`,`pft`.`package_flow_type_name` AS `package_flow_type_name`,`p`.`sender_customer_id` AS `sender_customer_id`,`p`.`sender_business_id` AS `sender_business_id`,`ptl`.`customer_id` AS `locker_customer_id`,`la`.`assigned_at` AS `assigned_datetime`,`la`.`expires_at` AS `expiration_datetime`,`la`.`retrieved_at` AS `retrieved_datetime`,1 AS `locker_assignment_count` from ((((((`lockerassignment` `la` join `package_to_locker` `ptl` on((`ptl`.`locker_assignment_id` = `la`.`locker_assignment_id`))) join `package` `p` on((`p`.`package_id` = `ptl`.`package_id`))) join `package_flow_type` `pft` on((`pft`.`package_flow_type_id` = `p`.`package_flow_type_id`))) join `smartlocker` `sl` on((`sl`.`locker_id` = `la`.`locker_id`))) left join `lockerlocations` `ll` on((`ll`.`locker_location_id` = `sl`.`locker_location_id`))) left join `facility` `f` on((`f`.`facility_id` = `ll`.`facility_id`))) */;
+/*!50001 VIEW `fact_shipping_revenue` AS select `sc`.`package_id` AS `package_id`,`p`.`recipient_customer_id` AS `customer_id`,`p`.`recipient_customer_id` AS `recipient_customer_id`,`p`.`package_flow_type_id` AS `package_flow_type_id`,`pft`.`package_flow_type_name` AS `package_flow_type_name`,`p`.`sender_customer_id` AS `sender_customer_id`,`p`.`sender_business_id` AS `sender_business_id`,`c`.`territory_id` AS `customer_territory_id`,`p`.`employee_id` AS `received_by_employee_id`,`p`.`service_type_id` AS `service_type_id`,`p`.`package_status_id` AS `package_status_id`,`p`.`received_date` AS `revenue_datetime`,`sc`.`actual_shipping_charge` AS `gross_shipping_revenue`,`sc`.`material_cost` AS `material_cost`,`sc`.`transportation_cost` AS `transportation_cost`,round((coalesce(`sc`.`material_cost`,0) + coalesce(`sc`.`transportation_cost`,0)),2) AS `total_internal_shipping_cost`,round(((`sc`.`actual_shipping_charge` - coalesce(`sc`.`material_cost`,0)) - coalesce(`sc`.`transportation_cost`,0)),2) AS `estimated_shipping_margin`,`sc`.`charge_source` AS `charge_source`,`sc`.`charge_recorded_at` AS `charge_recorded_at`,1 AS `shipping_charge_count` from (((`shipping_cost` `sc` join `package` `p` on((`p`.`package_id` = `sc`.`package_id`))) join `package_flow_type` `pft` on((`pft`.`package_flow_type_id` = `p`.`package_flow_type_id`))) left join `customer` `c` on((`c`.`customer_id` = `p`.`recipient_customer_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
--- Final view structure for view `dim_department`
+-- Final view structure for view `vw_user_account_roles`
 --
 
-/*!50001 DROP VIEW IF EXISTS `dim_department`*/;
+/*!50001 DROP VIEW IF EXISTS `vw_user_account_roles`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
@@ -1661,8 +1661,8 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`ryan`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `dim_department` AS select `d`.`department_id` AS `department_id`,`d`.`department_name` AS `department_name`,`d`.`facility_id` AS `facility_id`,`f`.`territory_id` AS `facility_territory_id`,`f`.`facility_name` AS `facility_name`,`d`.`manager_employee_id` AS `manager_employee_id`,`d`.`manager_start_date` AS `manager_start_date`,cast(`d`.`created_at` as date) AS `department_created_date` from (`departments` `d` left join `facility` `f` on((`f`.`facility_id` = `d`.`facility_id`))) */;
+/*!50013 DEFINER=`ryan`@`%` SQL SECURITY INVOKER */
+/*!50001 VIEW `vw_user_account_roles` AS select `ul`.`user_id` AS `user_id`,`ul`.`username` AS `username`,`ul`.`email` AS `email`,`ul`.`is_active` AS `is_active`,`ul`.`first_name` AS `first_name`,`ul`.`last_name` AS `last_name`,`r`.`role_id` AS `role_id`,`r`.`role_name` AS `role_name` from ((`user_logins` `ul` join `user_roles` `ur` on((`ul`.`user_id` = `ur`.`user_id`))) join `roles` `r` on((`ur`.`role_id` = `r`.`role_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -5006,6 +5006,66 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `u_UpdatingBusinessTerritoryIDs` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO' */ ;
+DELIMITER ;;
+CREATE DEFINER=`ryan`@`%` PROCEDURE `u_UpdatingBusinessTerritoryIDs`()
+BEGIN
+    -- Assign missing business territories only when the full tracked location matches.
+    UPDATE `business` b
+    JOIN `territory` t
+      ON UPPER(TRIM(b.`state_code`)) = UPPER(TRIM(t.`state`))
+     AND UPPER(TRIM(b.`county`))     = UPPER(TRIM(t.`county`))
+     AND UPPER(TRIM(b.`city`))       = UPPER(TRIM(t.`city`))
+     AND LEFT(TRIM(b.`zip_code`), 5) = TRIM(t.`zip_code`)
+    SET b.`territory_id` = t.`territory_id`
+    WHERE b.`territory_id` IS NULL;
+
+    -- Return unresolved businesses so missing or untracked locations are visible.
+    SELECT
+        b.`business_id`,
+        b.`business_name`,
+        b.`street_address`,
+        b.`city`,
+        b.`county`,
+        b.`state_code`,
+        b.`zip_code`,
+        b.`territory_id`,
+        CASE
+            WHEN b.`state_code` IS NULL OR TRIM(b.`state_code`) = '' THEN 'Missing state'
+            WHEN b.`county` IS NULL OR TRIM(b.`county`) = '' THEN 'Missing county'
+            WHEN b.`city` IS NULL OR TRIM(b.`city`) = '' THEN 'Missing city'
+            WHEN b.`zip_code` IS NULL OR TRIM(b.`zip_code`) = '' THEN 'Missing ZIP'
+            ELSE 'Location not tracked in territory table'
+        END AS `validation_issue`
+    FROM `business` b
+    LEFT JOIN `territory` t
+      ON UPPER(TRIM(b.`state_code`)) = UPPER(TRIM(t.`state`))
+     AND UPPER(TRIM(b.`county`))     = UPPER(TRIM(t.`county`))
+     AND UPPER(TRIM(b.`city`))       = UPPER(TRIM(t.`city`))
+     AND LEFT(TRIM(b.`zip_code`), 5) = TRIM(t.`zip_code`)
+    WHERE b.`territory_id` IS NULL
+      AND t.`territory_id` IS NULL
+    ORDER BY
+        `validation_issue`,
+        b.`state_code`,
+        LEFT(TRIM(b.`zip_code`), 5),
+        b.`city`,
+        b.`county`,
+        b.`business_name`;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `u_UpdatingCustomerTerritoryIDs` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -5268,4 +5328,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-09 21:47:18
+-- Dump completed on 2026-06-10 14:44:11

@@ -32,12 +32,12 @@ CREATE TABLE `shippingdetails` (
   `sender_territory_id` int DEFAULT NULL,
   `estimated_delivery_distance` decimal(10,2) DEFAULT NULL,
   `recipient_first_name` varchar(20) DEFAULT NULL,
+  `recipient_middle_initial` char(1) DEFAULT NULL,
   `recipient_last_name` varchar(20) DEFAULT NULL,
   `expected_delivery_date` datetime DEFAULT NULL,
   `delivered_date` datetime DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `recipient_middle_initial` char(1) DEFAULT NULL,
   PRIMARY KEY (`package_id`),
   KEY `idx_shippingdetails_sender_territory_id` (`sender_territory_id`),
   KEY `idx_shippingdetails_recipient_territory_id` (`recipient_territory_id`),
@@ -192,4 +192,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-09 21:46:38
+-- Dump completed on 2026-06-10 14:43:51

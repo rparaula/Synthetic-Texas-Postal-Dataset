@@ -64,12 +64,33 @@ For the initiation process of creating a package, we'll need both the package ta
 
 To simulate realistic trends like...how often each customer demographic orders a package, the type (both package contents & dimensions) of package a demographic orders, and the difference of these between each demographic of customers I decided to use the "Brazilian E-Commerce Public Dataset by Olist" dataset as a source of realistic inspiration. Within this dataset, I plan to use its' contents to map a realistic distribution of customer demographic, a time-series of each customer orders, and the beginning stage of each package's lifecycle (which is the timestamps of when a package was received at the post office, timestamp of when the package was sorted, and timestamp when package was ready to be moved from its' origin facility).
 
+To establish our customer records, I plan to use the olist_customers_dataset.csv as inspiration in creating a staging import file for the customers table within my MySQL database. With the Olist customers dataset, each record represents a single unique order placed by a customer. The dataset has a customer_id being the key to the orders dataset, customer_unique_id being the unique identifier for each customer, and fields for the first 5 digits for the customer ZIP, as well as city name and state; however, as you can probably see by inspecting the actual dataset most of the customer's location are in reference to South American locations.
 
-Since we used the olist_customers_dataset.csv to establish our postal customers, I also plan to use the olist_orders_dataset.csv to simulate every single "package" our "post office facilities" have received:
-	
+Thus, I plan to use Olist's customer_id's and customer_unique_id's for identification on my own customers but map each customer's South American ZIP, city, and state to Texas-based locations instead. Also since my customer's table has each record representing a unique character while the Olist customers dataset has each record representing each unique order under an individual customer, I'll have to deduplicate customer_unique_id's before mapping Texas geography to the Olist customers. Thus, the final import csv will look something like this.
+	- customer_id -> will later to be used to map to package_id
+	- customer_unique_id -> mapped to be the unique identifier for postal customers
+	- customer_zip_code -> mapped to assigned Texas ZIP
+	- customer_city -> mapped to assigned Texas city
+	- customer_state -> mapped to assigned Texas county
+End goal is to have the postal customers table populated, where each record represents a unique character, while also ensuring a realistic customer demographic through using the customer geographic distribution found within the Olist customer dataset.
+
+
+
+The most pressing issue is how to determine the shipping details of each package. Within our MySQL database, we need to keep track the package lifecycles of 2 different package flow types: Peer-to-Peer (P2P) and Business-to-Customer (B2C). P2P packages are when one customer sends an item or package to a post office (origin facility) to be delivered to another customer. while B2C packages are when a customer orders a product online thus that business delivers the product to a mail processing facility (origin facility) to be deliver to that customer.
+
+The full package lifecycle for each flow type looks like this:
+
+ - (B2C) customer orders product from business -> business sends product to mail processing facility (origin facility) -> product is packaged and sorted -> package is sent to a network facility or other mail processing facility that is near destination -> package is sent to post office that is near destination -> package is either picked up, delivered locally, or sent to Smartlocker.
+
+
+ - (P2P) post office (origin facility) receives item(s) from one customer wanting to deliver to another customer -> post office packages and sorts item(s) -> package departs from post office and is sent to nearest network facility -> package is sent to mail processing facility nearest to destination -> package sent to network facility near destination -> package sent to post office that is closest to destination -> package is either picked up, delivered locally, or sent to Smartlocker.
+
+
+Thus, to simulate realistic trends I plan to use the Olist E-Commerce dataset to simulate realistic package order frequency and realistic timestamps for package received, sorting, and departing at the origin facility. For realistic timestamps for middle-mile logisitics, I plan to use the Delhivery dataset for inspiration.
+
 - Each order within the Olist dataset represents a single package within our postal demo.
 	- olist.order_status can be mapped to package status to reference whether a package has been delivered, shipped, delayed, etc.
-	- olist.order_purchase_timestamp will represents the timestamp of when a post office (aka origin facility) has received a package from a customer.
+	- olist.order_purchase_timestamp will represents the timestamp of when a ORIGIN FACILITY has received a package from a customer/business.
 	- olist.order_approved_at will represent the timestamp of when the package was "sorted" at the origin facility (sorted means the item being processed/packaged into a box)
 	- olist.order_delivered_carrier_date will represent the time a package departs from the origin facility
 - For the actual contents and dimensions (weight, length, width, height) of a package, those will derive from the olist_order_items_dataset.csv and the olist_products_dataset.csv.
@@ -79,12 +100,18 @@ Since we used the olist_customers_dataset.csv to establish our postal customers,
 		- Totaling all the freight values of each item within the order to represent a package's material cost or maybe even transportation cost.
 		- Totaling all the prices of each item within an order can represent the actual charge we give to a customer for that package.
 	- For each package's dimensions (weight, length, width, height) we can use the olist_products_dataset.csv
-		- Since the order items dataset tells us what specific items is in each order (or each package) we can use the products dataset to find the dimensions of each product and total them together for the overall package dimensions.
-		- However, we need to decide an exact method of how we total all product dimensions. A box size depends on how we stack each item together to fit inside a box.
+		- Since the order items dataset tells us what specific items is in each order (or each package) we can use the products dataset to find the dimensions of each product and total them together for the overall package dimensions. However, we need to decide an exact method of how we total all product dimensions. A box size depends on how we stack each item together to fit inside a box.
 
-- The most pressing issue is how to determine the shipping details of each package.
-	- Since we are treating each Olist order as a package, the customer ID assigned to that order represents the customer ID of who sent that package to the origin facility (post office)
-	- However, each package needs a destination and atm I'm unsure if we should just randomize the destination or develop a fair algorithm. Maybe use the sellers dataset?
+
+- For the shipping details of each package, how that is generated will depend on the type of package flow: 
+For example, for B2C packages we can assume that the origin facility will be the mail processing facility that is closest to the territoryID of the business that is delivering the product to us. For the packages destination, it will simply be the territoryID of the customer or the customer's preferred facility depending on whether the package is a delivery, pickup, or smartlocker.
+
+For P2P packages, the package has to originate from one customer and be delivered to another. While it is easy to generate a package's destination using the Olist customer and order datasets, I'm unsure of how to synthetically determine a package's customer origin (sender_customer_id & sender_territory_id)
+
+
+
+
+
 		
 
 
