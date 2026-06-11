@@ -88,7 +88,7 @@ The full package lifecycle for each flow type looks like this:
 
 Thus, to simulate realistic trends I plan to use the Olist E-Commerce dataset to simulate realistic package order frequency and realistic timestamps for package received, sorting, and departing at the origin facility. For realistic timestamps for middle-mile logisitics, I plan to use the Delhivery dataset for inspiration.
 
-- Each order within the Olist dataset represents a single package within our postal demo.
+- Each order + seller within the Olist dataset represents a single package within our postal demo.
 	- olist.order_status can be mapped to package status to reference whether a package has been delivered, shipped, delayed, etc.
 	- olist.order_purchase_timestamp will represents the timestamp of when a ORIGIN FACILITY has received a package from a customer/business.
 	- olist.order_approved_at will represent the timestamp of when the package was "sorted" at the origin facility (sorted means the item being processed/packaged into a box)
@@ -106,12 +106,19 @@ Thus, to simulate realistic trends I plan to use the Olist E-Commerce dataset to
 - For the shipping details of each package, how that is generated will depend on the type of package flow: 
 For example, for B2C packages we can assume that the origin facility will be the mail processing facility that is closest to the territoryID of the business that is delivering the product to us. For the packages destination, it will simply be the territoryID of the customer or the customer's preferred facility depending on whether the package is a delivery, pickup, or smartlocker.
 
-For P2P packages, the package has to originate from one customer and be delivered to another. While it is easy to generate a package's destination using the Olist customer and order datasets, I'm unsure of how to synthetically determine a package's customer origin (sender_customer_id & sender_territory_id)
+For P2P packages, the package has to originate from one customer and be delivered to another. The two customers involved within a P2P package exchange must be greater than a minimum distance baseline, this is to ensure that no P2P sender is so close to a P2P recipient as it wouldn't make sense for a customer to send a package via USPS to someone else if they were in driving distance. Since we're using Olist dataset relationship of order -> customer to map our P2P package -> sender, we'll also use the preferred facility ID of every customer as the origin facility (which should also always be a post office facility).
 
 
 
 
 
+After a package has been received, the package_movement table will track the historical snapshots of each time a package is being received, sorted, or departed from a facility; however, with this idea also comes the responsibility of ensuring business logic remains sound. This will likely require and abundance of constraints, triggers, stored procedures, and various lookup/rules tables to enforce these rules. For example...
+
+If a package is a B2C package, for every package_movement record associated with that package, that record must be associated by an employee that is associated with the correct facility and department. For example, when a B2C package is first received at it's origin facility or departs from their origin facility the employee_id must be from an employee who not only works at the facility of where that package is at, but also be of the "Logistics" department of that facility. However, when that B2C package is getting sorted at their origin mail processing facility, the employee_id has to represent an employee from that facility's "Operations" department instead. 
+
+Likewise for P2P packages, when that package is first received that action must be processed by a employee who works for the "Retail Services" department of that Post Office. Sorted by an "Logistics" department of that post office, and departed from an "Delivery" employee of that same post office. 
+
+Lastly, the to_facility_id must also make sense. For B2C packages, we have to check if there is a mail processing/network facility that is closer to the destinationID their their origin facility. If there is the package would go there first, if not they would go to the postal office that is closest to the destination territoryID. For P2P packages, they are checking for any network facilities or mail processing facilities that closer to the destination their the P2P package's origin post office. If there is a network/mail processing facility closer the packages goes there, if not the package goes directly to the destination.
 		
 
 
