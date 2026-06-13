@@ -121,9 +121,66 @@ Likewise for P2P packages, when that package is first received that action must 
 Lastly, the to_facility_id must also make sense. For B2C packages, we have to check if there is a mail processing/network facility that is closer to the destinationID their their origin facility. If there is the package would go there first, if not they would go to the postal office that is closest to the destination territoryID. For P2P packages, they are checking for any network facilities or mail processing facilities that closer to the destination their the P2P package's origin post office. If there is a network/mail processing facility closer the packages goes there, if not the package goes directly to the destination.
 		
 
+Constraints & triggers needed to enforce business rules:
 
 
 
 
 
+
+Procedures will be needed to move through an entire business workflow.
+
+Prefixes:
+Basic procedures that deal with basic entity initiation and validation will have a one letter prefix.
+	- "c_" for customers
+	- "e_" for employees
+	- "f_" for departments & facilities
+	- "b_" for businesses
+Use pkg_init_ for the whole package setup group.
+Use pkg_move_ for movement lifecycle procedures.
+Use pkg_cost_ for shipping/revenue/cost procedures.
+Use cust_ / emp_ / fac_ for entity setup procedures.
+
+
+
+For example, for pkg_init_ResolveRecipientTerritory and pkg_init_ResolveSenderTerritory I know all I have to do is refactor the procedures to reference the binary IDs and remove any references to columns that do not exist right?  How about for pkg_init_pkg_init_DetermineOriginFacility and pkg_init_DetermineDestinationFacility? Since we split our type of packages between B2C and P2P, I'm assuming this complicates the logic of how we use procedures right?
+
+For example, like pkg_init_DetermineOriginFacility should return the facilityID of a package right? But since we've modified our database to separate our packages into two types of flows (B2C & P2P) then that means we need to refactor our logic to consider the difference of B2C and P2P packages right? So for B2C, this pkg_init_DetermineOriginFacility should return business.preferred_facility_id while ensuring that facility is a Mail Processing facility. Likewise, for P2P packages it should return the customer.preferred_facility_id and ensure the facility is a post offce right? 
+
+Furthermore, depending on the type of package flow backfall logic will also be different. For example for B2C packages:
+1. Use requested origin facility if provided and valid Mail Processing
+2. Else use business.preferred_facility_id if valid Mail Processing
+3. Else find nearest Mail Processing facility to business territory/ZIP
+
+But with P2P packages:
+1. Use requested origin facility if provided and valid Post Office
+2. Else use sender_customer.preferred_facility_id if valid Post Office
+3. Else find nearest Post Office to sender territory/ZIP
+
+
+So since the logic deviates into branches so much, I'm assuming we should divide pkg_init_DetermineOriginFacility into two sub-helper procedures that determine the origin facility for purely B2C and P2P packages only, then create a generic wrapper procedure that delegates between the two procedures right?
+
+
+
+Next, assuming we've fixed and fully recreated all setup procedures dealing with entity and package initiation, we'll next have to create proper package creations right? For example, I'm assuming we'll first need to create separate wrapper procedures for the different package flows, like CreateB2CPackage(...) and CreateP2PPackage(...), then we'll have a main procedure acting as the main shared orchestrator that uses those two procedures as sub-helpers while also create the related shipping details record right, like CreatePackageWithShippingDetails(...)? Or is there a better implementation at the moment? Also ensuring this whole process becomes a transaction right?
+
+Thus, if we follow that plan I'm assuming CreatePackageWithShippingDetails will also need various internal helper procedures that actually insert or validate the data. Thus the workflow for the package creation procedures look something like...
+
+User/import script calls:
+    CreateB2CPackage(...)
+        or
+    CreateP2PPackage(...)
+
+Those call:
+    CreatePackageWithShippingDetails(...)
+
+That procedure internally calls helper procedures:
+    ValidatePackageCreationInputs(...)
+    ResolveB2COriginFacility(...)
+    ResolveDestinationFacilityForService(...)
+    InsertPackageCore(...)
+    InsertShippingDetailsForPackage(...)
+    CreateInitialPackageRoutePlan(...)
+    InsertInitialPackageMovement(...)
+    CreateInitialShippingCost(...)
 
